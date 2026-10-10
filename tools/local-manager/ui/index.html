@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>本机管理中心</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-icon">⌘</span><div>本机管理中心<small>LOCAL MANAGER · 0.1</small></div></div>
+    <div class="nav-caption">工作空间</div>
+    <nav aria-label="主导航">
+      <button data-page="overview" class="active"><span>◈</span>总览</button>
+      <button data-page="docker"><span>▦</span>Docker</button>
+      <button data-page="ssh"><span>⌁</span>SSH 与服务器</button>
+      <button data-page="startup"><span>↗</span>开机项</button>
+      <button data-page="processes"><span>▥</span>运行程序</button>
+      <button data-page="services"><span>⚙</span>Windows 服务</button>
+      <button data-page="logs"><span>≡</span>操作记录</button>
+    </nav>
+    <div class="sidebar-bottom"><span class="dot"></span> 本机工作空间<small>配置保存在当前 Windows 用户下</small></div>
+  </aside>
+  <main>
+    <header><div><div class="eyebrow">你的电脑 · 尽在掌握</div><h1 id="title">总览</h1><p id="subtitle">查看本机资源与管理入口</p></div><div class="header-actions"><span id="updated">尚未刷新</span><button id="refresh" class="button">↻ 刷新</button></div></header>
+    <div id="notice" role="status" class="notice hidden"></div>
+    <section id="content" aria-live="polite"></section>
+    <footer>LOCAL MANAGER <span>本机执行 · 私钥保留原位 · 操作有记录</span></footer>
+  </main>
+  <dialog id="details"><div class="dialog-heading"><h2 id="detailTitle">详情</h2><button id="closeDetails" class="icon-button" aria-label="关闭详情">×</button></div><pre id="detailText"></pre></dialog>
+  <dialog id="serverDialog"><form id="serverForm">
+    <div class="dialog-heading"><h2>服务器配置</h2><button type="button" id="closeServer" class="icon-button" aria-label="关闭">×</button></div>
+    <input type="hidden" name="id">
+    <div class="form-grid">
+      <label>名称<input name="name" required maxlength="100" placeholder="例如：开发服务器"></label>
+      <label>分组<input name="group" maxlength="80" placeholder="例如：开发环境"></label>
+      <label>主机地址<input name="host" required placeholder="IP 地址或域名"></label>
+      <label>SSH 端口<input name="port" type="number" min="1" max="65535" value="22" required></label>
+      <label>用户名<input name="user" required placeholder="例如：ubuntu"></label>
+      <label>认证方式<span class="field-note">指定私钥，或在终端中输入密码</span></label>
+    </div>
+    <label>私钥绝对路径（可留空）<div class="input-row"><input name="key" placeholder="选择本机已有私钥"><button type="button" id="chooseKey" class="button">选择文件</button></div></label>
+    <label>备注<textarea name="note" rows="2" maxlength="600"></textarea></label>
+    <p class="muted">连接使用这里显示的参数。首次连接请在终端核对服务器指纹。不会自动执行 SSH config 中的代理命令或端口转发。</p>
+    <div class="dialog-actions"><button type="submit" class="button primary">保存服务器</button></div>
+  </form></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

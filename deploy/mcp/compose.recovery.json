@@ -1,0 +1,26 @@
+{
+  "services": {
+    "backend": {
+      "image": "singux/backend:1.1.10-20261009-service-recovery-mcp-r1",
+      "environment": { "MCP_PROXY_URL": "http://mcp-proxy:8080" },
+      "depends_on": { "mcp-proxy": { "condition": "service_healthy" } }
+    },
+    "mcp-proxy": {
+      "image": "singux/mcp-proxy:0.2.8-20261009-recovery-r1",
+      "init": true,
+      "restart": "unless-stopped",
+      "environment": { "UV_PYTHON_DOWNLOADS": "never", "UV_CACHE_DIR": "/tmp/uv-cache", "TOKIO_WORKER_THREADS": "2" },
+      "read_only": true,
+      "cap_drop": ["ALL"],
+      "security_opt": ["no-new-privileges:true"],
+      "pids_limit": 512,
+      "mem_limit": "1536m",
+      "cpus": 1.0,
+      "tmpfs": [
+        "/tmp:rw,nosuid,nodev,size=256m",
+        "/app/logs:rw,nosuid,nodev,size=32m,uid=10001,gid=10001",
+        "/home/mcp:rw,exec,nosuid,nodev,size=256m,uid=10001,gid=10001"
+      ]
+    }
+  }
+}

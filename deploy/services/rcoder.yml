@@ -1,0 +1,85 @@
+default_agent: Claude
+projects_dir: /data/projects
+port: 8090
+cleanup_config:
+  enabled: true
+  idle_timeout_seconds: 1800
+  cleanup_interval_seconds: 300
+  docker_stop_timeout_seconds: 30
+  container_protection_seconds: 300
+proxy_config:
+  listen_port: 8088
+  default_backend_port: 8090
+  backend_host: 127.0.0.1
+  port_param: port
+  health_check:
+    enabled: true
+    interval_seconds: 5
+    timeout_seconds: 1
+    healthy_threshold: 2
+    unhealthy_threshold: 3
+docker_config:
+  multi_image_config:
+    global_defaults:
+      registry_prefix: singux
+    selection_strategy: ServiceOnly
+    cache_config:
+      enabled: true
+      ttl_seconds: 3600
+      max_entries: 50
+    services:
+      web-agent-runner:
+        service_type: web-agent-runner
+        image: singux/rcoder:20260929-local
+        default_image: singux/rcoder:20260929-local
+        amd64_image: singux/rcoder:20260929-local
+        enabled: true
+        workspace_resolution_path: /data/projects
+        environment:
+          SERVICE_MODE: full
+          API_PORT: '8086'
+          PROJECT_WORKSPACE_BASE: /app/project_workspace
+        command: [/bin/bash, /app/agent-runner-start.sh, /app/bin/agent_runner, --port, '8086']
+        resource_limits:
+          memory_limit: 1073741824
+          cpu_limit: 1.0
+          swap_limit: 1073741824
+        network_mode: singux-local_default
+        work_dir: /app
+        mounts:
+          - container_path: /app/project_workspace/{project_id}
+            host_path: '{resolved_path}/{project_id}'
+            mount_type: bind
+            read_only: false
+            resolve_from: /data/projects
+      computer-agent-runner:
+        service_type: computer-agent-runner
+        image: singux/computer-runner:20261008-local
+        default_image: singux/computer-runner:20261008-local
+        amd64_image: singux/computer-runner:20261008-local
+        enabled: true
+        workspace_resolution_path: /data/computer
+        environment:
+          HOME: /home/user
+          DISPLAY: ':1'
+          PROJECT_WORKSPACE_BASE: /home/user
+          SERVICE_MODE: agent-only
+          AGENT_PORT: '8086'
+        command: [/app/start-computer.sh]
+        resource_limits:
+          memory_limit: 1610612736
+          cpu_limit: 1.0
+          swap_limit: 1610612736
+        network_mode: singux-local_default
+        work_dir: /app
+        mounts:
+          - container_path: /home/user
+            host_path: '{resolved_path}/{user_id}'
+            mount_type: bind
+            read_only: false
+            resolve_from: /data/computer
+  network_mode: singux-local_default
+  network_base_name: singux-services
+  work_dir: /app
+  auto_cleanup: true
+  container_ttl_seconds: 1800

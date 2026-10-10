@@ -1,0 +1,220 @@
+name: singular-origo
+
+services:
+  frontend:
+    image: ${FRONTEND_IMAGE:-singular-origo-frontend:local}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:22.10.0}
+        NGINX_IMAGE: ${NGINX_IMAGE:-nginx:alpine}
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmmirror.com}
+    environment:
+      SERVER_NAME: ${SERVER_NAME:-_}
+      API_UPSTREAM: http://backend:8081
+      MODEL_PROXY_UPSTREAM: http://backend:18086
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      backend:
+        condition: service_started
+    restart: unless-stopped
+
+  backend:
+    image: ${BACKEND_IMAGE:-singular-origo-backend:local}
+    build:
+      context: ${ORIGO_BACKEND_DIR:-D:/singuxplatform/nuwax-backend}
+      dockerfile_inline: |
+        FROM maven:3.9.9-eclipse-temurin-17 AS builder
+        WORKDIR /workspace
+        COPY . .
+        RUN cp app-platform-bootstrap/app-platform-web-bootstrap/src/main/resources/application-prod.sample.yml \
+          app-platform-bootstrap/app-platform-web-bootstrap/src/main/resources/application-prod.yml
+        RUN --mount=type=cache,target=/root/.m2 mvn -B -Pprod -DskipTests clean package
+
+        FROM eclipse-temurin:17-jre-jammy
+        WORKDIR /app
+        RUN apt-get update \
+          && apt-get install -y --no-install-recommends curl \
+          && rm -rf /var/lib/apt/lists/* \
+          && groupadd --system app \
+          && useradd --system --gid app --home-dir /app app
+        COPY --from=builder /workspace/app-platform-bootstrap/app-platform-web-bootstrap/target/app-platform-web-bootstrap-*.jar /app/app.jar
+        RUN mkdir -p /data/uploads && chown -R app:app /app /data
+        USER app
+        EXPOSE 8081 18082 18085 18086
+        HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=10 \
+          CMD curl -fsS http://localhost:8081/health || exit 1
+        ENTRYPOINT ["sh", "-c", "java $${JAVA_OPTS:-} -jar /app/app.jar"]
+    environment:
+      JAVA_OPTS: ${BACKEND_JAVA_OPTS:--XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom}
+      SPRING_PROFILES_ACTIVE: prod
+      PLATFORM_ADMIN_USER_IDS: ${PLATFORM_ADMIN_USER_IDS:-}
+      PLATFORM_TENANT_POLICY_ENABLED: ${PLATFORM_TENANT_POLICY_ENABLED:-false}
+      PLATFORM_MEMBERSHIP_ENABLED: ${PLATFORM_MEMBERSHIP_ENABLED:-false}
+      PLATFORM_ONBOARDING_ENABLED: ${PLATFORM_ONBOARDING_ENABLED:-false}
+      MODEL_API_PROXY_INTERNAL_BASE_URL: ${MODEL_API_PROXY_INTERNAL_BASE_URL:-http://127.0.0.1:18086}
+      PLATFORM_PUBLIC_HOSTS: ${PLATFORM_PUBLIC_HOSTS:-www.ciyuancenter.cc}
+      DB_HOST: mysql
+      DB_NAME: ${MYSQL_DATABASE:-agent_platform}
+      DB_USERNAME: root
+      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-singular_origo_root_password}
+      DORIS_HOST: mysql
+      DORIS_DB_NAME: ${DORIS_DB_NAME:-agent_custom_table}
+      DORIS_USERNAME: root
+      DORIS_PASSWORD: ${MYSQL_ROOT_PASSWORD:-singular_origo_root_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_DB: ${REDIS_DB:-1}
+      MILVUS_URI: http://milvus:19530
+      MILVUS_USER: ${MILVUS_USER:-root}
+      MILVUS_PASSWORD: ${MILVUS_PASSWORD:-}
+      ES_URL: http://elasticsearch:9200
+      ES_USERNAME: ${ES_USERNAME:-elastic}
+      ES_PASSWORD: ${ES_PASSWORD:-}
+      ES_API_KEY: ${ES_API_KEY:-}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-change_me_to_a_32_char_minimum_secret}
+      STORAGE_TYPE: ${STORAGE_TYPE:-local}
+      FILE_UPLOAD_FOLDER: /data/uploads
+      LOCAL_UPLOAD_FOLDER: /data/uploads
+      FILE_BASE_URL: ${FILE_BASE_URL:-/api/file}
+      MCP_PROXY_URL: ${MCP_PROXY_URL:-http://host.docker.internal:8020}
+      CODE_EXECUTE_URL: ${CODE_EXECUTE_URL:-http://host.docker.internal:8020/api/run_code_with_log}
+      LOG_SERVICE_URL: ${LOG_SERVICE_URL:-http://host.docker.internal:8097}
+      BUILD_SERVER_URL: ${BUILD_SERVER_URL:-http://host.docker.internal:60000/api}
+      AI_AGENT_URL: ${AI_AGENT_URL:-http://host.docker.internal:8086}
+      DOCKER_PROXY_URL: ${DOCKER_PROXY_URL:-http://host.docker.internal:8088}
+      DEV_SERVER_HOST: ${DEV_SERVER_HOST:-http://localhost}
+      PROD_SERVER_HOST: ${PROD_SERVER_HOST:-http://localhost:8099}
+      MODEL_API_BASE_URL: ${MODEL_API_BASE_URL:-}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 30
+      start_period: 600s
+    volumes:
+      - backend-uploads:/data/uploads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      milvus:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+    restart: unless-stopped
+
+  mysql:
+    image: ${MYSQL_IMAGE:-mysql:8.4}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-singular_origo_root_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-agent_platform}
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=500
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./deploy/mysql:/docker-entrypoint-initdb.d:ro
+      - ${ORIGO_BACKEND_DIR:-D:/singuxplatform/nuwax-backend}/sql:/backend-sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  redis:
+    image: ${REDIS_IMAGE:-redis:7-alpine}
+    command: >
+      sh -c 'if [ -n "$$REDIS_PASSWORD" ]; then
+        redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD";
+      else
+        redis-server --appendonly yes;
+      fi'
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  etcd:
+    image: ${ETCD_IMAGE:-quay.io/coreos/etcd:v3.5.18}
+    environment:
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: "1000"
+      ETCD_QUOTA_BACKEND_BYTES: "4294967296"
+      ETCD_SNAPSHOT_COUNT: "50000"
+    command: >
+      etcd
+      -advertise-client-urls=http://127.0.0.1:2379
+      -listen-client-urls=http://0.0.0.0:2379
+      --data-dir=/etcd
+    volumes:
+      - etcd-data:/etcd
+    restart: unless-stopped
+
+  minio:
+    image: ${MINIO_IMAGE:-minio/minio:RELEASE.2025-04-22T22-12-26Z}
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    command: server /minio_data --console-address ":9001"
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio-data:/minio_data
+    restart: unless-stopped
+
+  milvus:
+    image: ${MILVUS_IMAGE:-milvusdb/milvus:v2.5.4}
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+      MINIO_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      COMMON_STORAGETYPE: minio
+      COMMON_SECURITY_AUTHORIZATIONENABLED: "false"
+    ports:
+      - "${MILVUS_PORT:-19530}:19530"
+      - "${MILVUS_METRICS_PORT:-9091}:9091"
+    volumes:
+      - milvus-data:/var/lib/milvus
+    depends_on:
+      - etcd
+      - minio
+    restart: unless-stopped
+
+  elasticsearch:
+    image: ${ELASTICSEARCH_IMAGE:-bitnami/elasticsearch:8.18.0}
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms1g -Xmx1g}
+    ports:
+      - "${ELASTICSEARCH_PORT:-9200}:9200"
+    volumes:
+      - elasticsearch-data:/bitnami/elasticsearch/data
+    restart: unless-stopped
+
+volumes:
+  backend-uploads:
+  mysql-data:
+  redis-data:
+  etcd-data:
+  minio-data:
+  milvus-data:
+  elasticsearch-data:

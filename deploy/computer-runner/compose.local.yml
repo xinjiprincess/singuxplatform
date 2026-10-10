@@ -1,0 +1,21 @@
+name: singux-computer-preview
+services:
+  computer:
+    image: singux/computer-runner:20261008-local
+    ports:
+      - "127.0.0.1:18100:6080"
+      - "127.0.0.1:18106:8086"
+    volumes:
+      - computer-home:/home/user
+    mem_limit: 1536m
+    cpus: 1.0
+    pids_limit: 512
+    shm_size: 256m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - NET_RAW
+      - NET_ADMIN
+    restart: unless-stopped
+volumes:
+  computer-home:

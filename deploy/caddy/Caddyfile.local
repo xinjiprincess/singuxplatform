@@ -1,0 +1,30 @@
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	encode zstd gzip
+	handle /api/proxy/model/* {
+		reverse_proxy singux-local-backend-1:18086 {
+			flush_interval -1
+		}
+	}
+	handle /api/* {
+		reverse_proxy singux-local-backend-1:8081 {
+			header_up -Forwarded
+			header_up X-Forwarded-Proto {scheme}
+			header_up X-Forwarded-Host {host}
+			header_up X-Forwarded-For {remote_host}
+			flush_interval -1
+		}
+	}
+	handle /health {
+		reverse_proxy singux-local-backend-1:8081
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

@@ -1,0 +1,2702 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>SinguX 平台智能体与工作流手册</title><style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html,body { margin:0; padding:0; }
+body { font-family: "Microsoft YaHei","Segoe UI",sans-serif; font-size: 10.5pt;
+       line-height: 1.65; color: #1f2937; }
+.cover { height: 297mm; width: 210mm; position: relative; color: #fff;
+         background: linear-gradient(160deg,#1d4ed8 0%,#0ea5e9 100%);
+         display:flex; flex-direction:column; align-items:center; justify-content:center;
+         page-break-after: always; }
+.cover img { width: 140px; height: 140px; border-radius: 32px; margin-bottom: 24mm; }
+.cover h1 { font-size: 29pt; font-weight: 800; margin: 0 20mm; text-align:center;
+            color:#fff; border:none; padding:0; }
+.cover .sub { font-size: 13pt; margin-top: 8mm; opacity: .93; }
+.cover .meta { position:absolute; bottom: 20mm; font-size: 10.5pt; opacity:.85; }
+.content { padding: 17mm 17mm 18mm 17mm; }
+h1 { font-size: 20pt; color: #1e3a8a;
+     border-bottom: 3px solid #2563eb; padding-bottom: 2.5mm; margin: 2mm 0 5mm; }
+.content h1 { page-break-before: always; }
+.content > h1:first-child { page-break-before: avoid; }
+h2 { font-size: 15pt; color: #1e40af; page-break-before: always;
+     border-bottom: 1px solid #bfdbfe; padding-bottom: 1.8mm; margin: 7mm 0 4mm; }
+h3 { font-size: 12.5pt; color: #1e3a8a; margin: 6mm 0 2mm; }
+h4 { font-size: 11pt; color: #334155; margin: 4mm 0 2mm; }
+p { margin: 2.4mm 0; }
+img { max-width: 100%; display:block; margin: 4mm auto; break-inside: avoid; }
+ul,ol { margin: 2.4mm 0; padding-left: 8mm; }
+li { margin: 1mm 0; }
+pre { background:#f1f5f9; border:1px solid #e2e8f0; border-radius:5px;
+      padding:3mm 4mm; font-family: Consolas,"Courier New",monospace; font-size:8.4pt;
+      line-height:1.45; white-space:pre-wrap; word-wrap:break-word; break-inside:avoid; }
+code { font-family: Consolas,"Courier New",monospace; background:#eef2ff;
+       padding:0 2px; border-radius:3px; font-size:8.9pt; }
+pre code { background:none; padding:0; }
+table { border-collapse:collapse; width:100%; margin:4mm 0; font-size:9pt; }
+th,td { border:1px solid #cbd5e1; padding:1.8mm 2.2mm; text-align:left;
+        vertical-align: top; word-wrap:break-word; }
+th { background:#dbeafe; font-weight:700; }
+tr { break-inside:avoid; }
+blockquote { margin:3.4mm 0; padding:2.2mm 4mm; border-left:4px solid #2563eb;
+             background:#eff6ff; border-radius:0 5px 5px 0; break-inside:avoid; }
+blockquote p { margin:1.2mm 0; }
+hr { border:none; border-top:1px solid #e2e8f0; margin:5mm 0; page-break-after:always; }
+a { color:#1d4ed8; text-decoration:none; }
+</style></head><body>
+<div class="cover">
+  <img src="images/cover-logo.png" alt="SinguX">
+  <h1>SinguX 平台智能体与工作流手册</h1>
+  <div class="sub">普通用户使用指南 · 开放 API 参考</div>
+  <div class="meta">云端平台 · 图文步骤 · 开发者接口</div>
+</div>
+<div class='content'><h2 id="目录">目录</h2>
+<h3 id="第一篇-普通用户使用指南">第一篇　普通用户使用指南</h3>
+<ol type="1">
+<li><a href="#1-认识-singux-平台">认识 SinguX 平台</a></li>
+<li><a href="#2-注册登录与平台入口">注册、登录与平台入口</a></li>
+<li><a href="#3-认识工作空间">认识工作空间</a></li>
+<li><a href="#4-创建你的第一个智能体">创建你的第一个智能体</a></li>
+<li><a href="#5-使用分享与导出智能体">使用、分享与导出智能体</a></li>
+<li><a href="#6-常用能力速览">常用能力速览</a></li>
+<li><a href="#7-常见问题与使用建议">常见问题与使用建议</a></li>
+</ol>
+<h3 id="第二篇-开放-api-参考开发者">第二篇　开放 API 参考（开发者）</h3>
+<ol start="8" type="1">
+<li><a href="#8-使用前准备">使用前准备</a></li>
+<li><a href="#9-创建会话">创建会话</a></li>
+<li><a href="#10-开始会话sse-流式">开始会话（SSE 流式）</a></li>
+<li><a href="#11-查询智能体历史会话">查询智能体历史会话</a></li>
+<li><a href="#12-查询会话信息">查询会话信息</a></li>
+<li><a href="#13-更新会话主题">更新会话主题</a></li>
+<li><a href="#14-查询会话消息列表">查询会话消息列表</a></li>
+<li><a href="#15-查询会话文件列表">查询会话文件列表</a></li>
+<li><a href="#16-访问会话文件">访问会话文件</a></li>
+<li><a href="#17-执行插件">执行插件</a></li>
+<li><a href="#18-执行工作流">执行工作流</a></li>
+<li><a href="#19-工作流流式执行">工作流流式执行</a></li>
+<li><a href="#20-附录状态码与事件类型速查">附录：状态码与事件类型速查</a></li>
+</ol>
+<h1 id="第一篇-普通用户使用指南-1">第一篇　普通用户使用指南</h1>
+<h2 id="1-认识-singux-平台">1. 认识 SinguX 平台</h2>
+<p>SinguX 是一套<strong>通用智能体操作系统</strong>，帮助你打造私有的垂类通用智能体：从理解需求、规划任务到交付结果，全链路自动完成。</p>
+<p><strong>你可以用它做什么：</strong></p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>知识问答 / 智能客服</td>
+<td>基于你的资料回答问题，可嵌入网页、公众号或 IM</td>
+</tr>
+<tr>
+<td>任务型助手</td>
+<td>自动联网搜索、发送邮件、生成网页、定时执行任务</td>
+</tr>
+<tr>
+<td>企业智能中台</td>
+<td>接入私有模型、MCP 工具，通过开放 API 对接业务系统</td>
+</tr>
+</tbody>
+</table>
+<p><strong>两种智能体类型：</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>问答型</strong></td>
+<td>快问快答，围绕知识与对话</td>
+<td>知识问答、智能客服、内容生成</td>
+</tr>
+<tr>
+<td><strong>通用型</strong></td>
+<td>配备独立「执行电脑」，可运行代码、操作文件、调用工具完成多步骤任务</td>
+<td>自动调研、数据处理、网页报告、复杂自动化</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>建议新手从<strong>问答型</strong>开始，熟悉后再尝试通用型。</p>
+</blockquote>
+<h2 id="2-注册登录与平台入口">2. 注册、登录与平台入口</h2>
+<p><strong>第一步：打开平台地址</strong></p>
+<p>在浏览器中访问平台：<a href="https://www.ciyuancenter.cc/">https://www.ciyuancenter.cc/</a></p>
+<p><strong>第二步：注册 / 登录</strong></p>
+<ol type="1">
+<li>首次使用按页面提示完成注册（通常使用邮箱或手机号）；</li>
+<li>已注册用户直接输入账号密码登录；</li>
+<li>登录后系统会自动为你创建并进入私有平台。</li>
+</ol>
+<blockquote>
+<p><strong>提示</strong>：如果忘记密码，可在登录页通过「忘记密码」入口，使用注册邮箱或手机号找回。</p>
+</blockquote>
+<p><strong>第三步：进入工作空间</strong></p>
+<p>登录成功后看到的主界面就是工作空间，所有创建和管理操作都从这里开始。</p>
+<h2 id="3-认识工作空间">3. 认识工作空间</h2>
+<p>工作空间左侧为功能导航栏，主要菜单如下：</p>
+<table>
+<thead>
+<tr>
+<th>菜单</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>智能体开发</strong></td>
+<td>创建、编排、发布和管理智能体（最常用）</td>
+</tr>
+<tr>
+<td>网页应用开发</td>
+<td>创建由智能体驱动的网页应用</td>
+</tr>
+<tr>
+<td><strong>组件资源</strong></td>
+<td>管理插件与工作流、知识库与数据存储、模型</td>
+</tr>
+<tr>
+<td>技能管理</td>
+<td>封装可复用的专项能力（Skill）</td>
+</tr>
+<tr>
+<td>MCP 管理</td>
+<td>接入标准 MCP 协议的工具与服务</td>
+</tr>
+<tr>
+<td>IM 机器人</td>
+<td>把智能体接入即时通讯工具</td>
+</tr>
+<tr>
+<td>任务中心</td>
+<td>配置定时、自动执行的任务</td>
+</tr>
+<tr>
+<td>日志查询</td>
+<td>查询调用与运行日志</td>
+</tr>
+<tr>
+<td><strong>空间广场</strong></td>
+<td>使用和体验已发布的智能体</td>
+</tr>
+</tbody>
+</table>
+<p>除「个人空间」外，你还可以创建或加入团队空间，与成员协作开发。</p>
+<h2 id="4-创建你的第一个智能体">4. 创建你的第一个智能体</h2>
+<p>本节以创建一个<strong>问答型智能体</strong>为例，全程约 5 分钟。</p>
+<h3 id="第-1-步新建智能体">第 1 步：新建智能体</h3>
+<ol type="1">
+<li>打开「<strong>智能体开发</strong>」页面；</li>
+<li>点击「<strong>创建智能体</strong>」；</li>
+<li>在弹窗中选择「<strong>问答型</strong>」（适合知识问答、智能客服等快问快答场景）。</li>
+</ol>
+<p>创建成功后会自动跳转到<strong>智能体编排页面</strong>，所有配置都在这里完成。</p>
+<h3 id="第-2-步配置系统提示词">第 2 步：配置系统提示词</h3>
+<p>系统提示词定义了智能体「是谁、按什么规则做事」。</p>
+<ul>
+<li><strong>新手推荐</strong>：点击系统提示词右上角的「<strong>优化</strong>」按钮，让 AI 根据你的简单描述自动生成提示词；</li>
+<li>也可以直接手写。一个最简单的提示词模板：</li>
+</ul>
+<pre class="text"><code># Role：知识问答助手
+- 你是一名专业的资料问答专家，根据已有资料回答用户问题。
+
+# Rules：
+- 只回答与资料相关的问题，不知道就如实说明，不要编造。
+- 回答使用中文，条理清晰，先给结论再做说明。</code></pre>
+<blockquote>
+<p><strong>提示</strong>：提示词写得越具体——角色、规则、输出格式、语气——智能体的表现越稳定。</p>
+</blockquote>
+<h3 id="第-3-步给智能体添加能力">第 3 步：给智能体添加能力</h3>
+<p>在编排页面为智能体添加<strong>插件</strong>，让它获得联网搜索、发送邮件、网页导出等能力。新手建议先添加「联网搜索」。</p>
+<p>后续还可以按需挂载：</p>
+<ul>
+<li><strong>知识库</strong>：上传文档，让智能体基于你的资料回答（RAG）；</li>
+<li><strong>数据表</strong>：让智能体读写结构化业务数据；</li>
+<li><strong>工作流</strong>：把多个处理步骤串成固定流程。</li>
+</ul>
+<h3 id="第-4-步发布智能体">第 4 步：发布智能体</h3>
+<p>配置完成后，点击「<strong>发布</strong>」，智能体才会正式生效并对其他用户可见。</p>
+<blockquote>
+<p><strong>提示</strong>：之后每次修改提示词或组件，都需要重新发布才会生效。</p>
+</blockquote>
+<h3 id="第-5-步开始对话">第 5 步：开始对话</h3>
+<p>在「<strong>空间广场</strong>」中找到并打开刚发布的智能体，直接输入问题即可开始使用。</p>
+<p>如果回答效果不理想，回到编排页面调整提示词或增减插件，重新发布后再试——这是使用智能体最常见的迭代方式。</p>
+<h2 id="5-使用分享与导出智能体">5. 使用、分享与导出智能体</h2>
+<p>在「智能体开发」页面，每个智能体卡片右下角都有一个「<strong>···</strong>」（更多操作）按钮，点击后弹出操作菜单：</p>
+<p><img src="images/agent-menu.png" alt="智能体更多操作菜单" /></p>
+<p>菜单包含：分析、复制到空间、迁移、临时会话、独立会话链接、API Key、导出配置、日志、删除。</p>
+<h3 id="51-智能体数据分析">5.1 智能体数据分析</h3>
+<p>点击「<strong>分析</strong>」，可以查看该智能体的使用数据，例如使用人数、会话数量、收藏与点赞情况等，帮助你了解智能体的受欢迎程度和调用情况。</p>
+<p><img src="images/agent-analytics.png" alt="智能体数据分析" /></p>
+<h3 id="52-临时会话临时分享链接">5.2 临时会话（临时分享链接）</h3>
+<p>临时会话用于生成一个<strong>带有效期</strong>的分享链接，适合短期发给他人试用。</p>
+<ol type="1">
+<li>在菜单中点击「<strong>临时会话</strong>」：</li>
+</ol>
+<p><img src="images/temp-chat.png" alt="临时会话入口" /></p>
+<ol start="2" type="1">
+<li>在弹出页面点击「<strong>新增链接</strong>」：</li>
+</ol>
+<p><img src="images/temp-chat-add-link.png" alt="新增临时会话链接" /></p>
+<ol start="3" type="1">
+<li>选择链接的<strong>有效期</strong>（建议尽量设置得长一些），通过日期时间选择器调整后确认：</li>
+</ol>
+<p><img src="images/temp-chat-expiry.png" alt="设置链接有效期" /></p>
+<ol start="4" type="1">
+<li>链接生成后，可以通过「<strong>复制链接</strong>」或「<strong>二维码</strong>」的方式把智能体分享给他人。对方打开链接即可直接与智能体对话，无需登录你的平台。</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：临时链接到期后会自动失效，如需长期分享请使用「独立会话链接」。</p>
+</blockquote>
+<h3 id="53-独立会话链接">5.3 独立会话链接</h3>
+<p>「独立会话链接」会为智能体生成一个<strong>长期有效</strong>的独立访问入口，提供给别人即可长期使用。</p>
+<ol type="1">
+<li>在菜单中点击「<strong>独立会话链接</strong>」：</li>
+</ol>
+<p><img src="images/standalone-session.png" alt="独立会话链接" /></p>
+<ol start="2" type="1">
+<li>在弹窗中可以：
+<ul>
+<li>复制独立会话的访问链接 / 二维码，分享给他人；</li>
+<li>生成该智能体专属的 <strong>API Key</strong>，之后即可通过自己编写的程序调用智能体：</li>
+</ul></li>
+</ol>
+<p><img src="images/standalone-session-apikey.png" alt="独立会话与 API Key 生成" /></p>
+<blockquote>
+<p><strong>注意</strong>：API Key 相当于访问凭证，请妥善保管、避免泄露；关闭弹窗后无法再次查看完整 Key，如有遗失请重新生成。</p>
+</blockquote>
+<h3 id="54-其他常用操作">5.4 其他常用操作</h3>
+<table>
+<thead>
+<tr>
+<th>菜单项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>复制到空间</strong></td>
+<td>把智能体复制一份到其他空间</td>
+</tr>
+<tr>
+<td><strong>迁移</strong></td>
+<td>将智能体迁移到目标空间</td>
+</tr>
+<tr>
+<td><strong>导出配置</strong></td>
+<td>导出智能体的配置文件，便于备份或在其他平台导入</td>
+</tr>
+<tr>
+<td><strong>日志</strong></td>
+<td>导出该智能体的运行日志</td>
+</tr>
+<tr>
+<td><strong>删除</strong></td>
+<td>删除智能体（<strong>不可恢复</strong>，请谨慎操作）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="55-查看运行日志">5.5 查看运行日志</h3>
+<p>点击「<strong>日志</strong>」并导出后，可以查看智能体每次生成的内容与运行情况，便于排查问题或复盘效果。</p>
+<p><img src="images/agent-logs.png" alt="智能体日志导出" /></p>
+<h3 id="56-创建和管理-api-key平台级">5.6 创建和管理 API Key（平台级）</h3>
+<p>除了在智能体菜单中生成专属 Key，你还可以在平台层面统一管理 API Key，并为每个 Key 单独配置可调用的接口范围。</p>
+<p><strong>操作路径</strong>：左下角「更多」菜单 → <strong>API Key 管理</strong></p>
+<p><img src="images/api-key-user.png" alt="API Key 管理页面" /></p>
+<ol type="1">
+<li>在 API Key 管理页面点击「<strong>新增</strong>」，创建新的 API Key；</li>
+<li>为每个 API Key 配置「<strong>可调用的接口范围</strong>」，灵活控制不同场景下的权限粒度；</li>
+<li>创建完成后立即复制并妥善保存 API Key（关闭后无法再次查看完整 Key）。</li>
+</ol>
+<blockquote>
+<p><strong>注意事项：</strong></p>
+<ul>
+<li>管理员可在后台控制是否允许普通用户获取 API Key；</li>
+<li>建议按使用场景分别创建 Key，并为每个 Key 配置最小必要权限；</li>
+<li>API Key 是访问凭证，请勿公开分享或提交到代码仓库。</li>
+</ul>
+</blockquote>
+<h2 id="6-常用能力速览">6. 常用能力速览</h2>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插件</td>
+<td>把外部能力（联网搜索、邮件发送、网页导出等）挂给智能体</td>
+</tr>
+<tr>
+<td>知识库</td>
+<td>上传文档做 RAG 问答，支持知识图谱</td>
+</tr>
+<tr>
+<td>数据表</td>
+<td>类表格数据库，供智能体读写业务数据</td>
+</tr>
+<tr>
+<td>工作流</td>
+<td>可视化编排多节点处理流程</td>
+</tr>
+<tr>
+<td>技能管理</td>
+<td>封装可复用的专项能力（Skill）</td>
+</tr>
+<tr>
+<td>子智能体</td>
+<td>由一个主智能体调度多个专职子智能体</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>接入标准 MCP 协议的工具与服务</td>
+</tr>
+<tr>
+<td>任务中心</td>
+<td>让智能体定时、自动执行任务</td>
+</tr>
+<tr>
+<td>开放 API</td>
+<td>通过 API Key 在你自己的系统中调用智能体</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-常见问题与使用建议">7. 常见问题与使用建议</h2>
+<p><strong>Q1：智能体的回答不准确 / 答非所问怎么办？</strong></p>
+<p>按以下顺序排查：</p>
+<ol type="1">
+<li>优化<strong>系统提示词</strong>：写清角色、规则、输出格式，必要时点击「优化」按钮重新生成；</li>
+<li>检查是否挂载了必要的<strong>插件或知识库</strong>（例如需要最新信息时要挂「联网搜索」）；</li>
+<li>确认知识库中的资料是否完整、切分是否合理；</li>
+<li>修改后<strong>重新发布</strong>，再次测试。多轮调整是正常过程。</li>
+</ol>
+<p><strong>Q2：修改了配置但效果没变？</strong></p>
+<p>修改提示词或组件后必须重新「<strong>发布</strong>」才会生效。若仅用于调试，可在 API 调用时开启开发模式（<code>devMode: true</code>），此时智能体无需发布、变更实时生效。</p>
+<p><strong>Q3：分享给别人的链接打不开了？</strong></p>
+<p>临时会话链接有有效期，到期会失效，请重新生成链接，或改用长期有效的「独立会话链接」。</p>
+<p><strong>Q4：在哪里查看 token 消耗？额度不够怎么办？</strong></p>
+<p>可在智能体「分析」页面和运行日志中查看每次调用的 token 消耗；高频或商用场景如额度不足，可联系平台了解更多额度方案。</p>
+<p><strong>Q5：智能体会不会泄露我的资料？</strong></p>
+<p>云端平台为租户隔离，私有资料仅在你的平台内使用；对数据安全要求高的企业可考虑私有化部署。</p>
+<p><strong>Q6：误删了智能体能恢复吗？</strong></p>
+<p>删除操作不可恢复。建议重要智能体提前使用「导出配置」进行备份。</p>
+<h1 id="第二篇-开放-api-参考开发者-1">第二篇　开放 API 参考（开发者）</h1>
+<h2 id="8-使用前准备">8. 使用前准备</h2>
+<h3 id="81-获取-api-key">8.1 获取 API Key</h3>
+<p>调用开放 API 前需先获取 API Key，获取方式见第一篇 <a href="#53-独立会话链接">5.3</a> 与 <a href="#56-创建和管理-api-key平台级">5.6</a>。</p>
+<h3 id="82-接口基础地址base-url">8.2 接口基础地址（Base URL）</h3>
+<p>平台接口基础地址为：<code>https://www.ciyuancenter.cc</code></p>
+<p>以下示例均使用该地址，请将示例中的 API Key 替换为你自己的 Key。</p>
+<h3 id="83-公共请求头">8.3 公共请求头</h3>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>必填</th>
+<th>描述</th>
+<th>示例值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>string</td>
+<td>是</td>
+<td>API Key 鉴权</td>
+<td><code>Bearer ak-YOUR_API_KEY</code></td>
+</tr>
+<tr>
+<td>singux-user-id</td>
+<td>string</td>
+<td>否</td>
+<td>SinguX 用户 ID，仅管理员创建的 API Key 调用时有效，用于身份切换</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>singux-user-uid</td>
+<td>string</td>
+<td>否</td>
+<td>SinguX 用户 UID，仅管理员创建的 API Key 调用时有效，用于身份切换</td>
+<td><code>admin</code></td>
+</tr>
+<tr>
+<td>External-Username</td>
+<td>string</td>
+<td>否</td>
+<td>外部系统用户名，用于日志跟踪</td>
+<td><code>张三</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="84-统一响应结构">8.4 统一响应结构</h3>
+<p>所有接口均返回统一结构，业务是否成功以 <code>code</code> 是否为 <code>"0000"</code> 为准：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code</td>
+<td>业务状态码，<code>0000</code> 表示成功，其余为失败</td>
+</tr>
+<tr>
+<td>displayCode</td>
+<td>源系统状态码，用于问题跟踪</td>
+</tr>
+<tr>
+<td>message</td>
+<td>错误描述信息</td>
+</tr>
+<tr>
+<td>data</td>
+<td>业务数据（结构因接口而异）</td>
+</tr>
+<tr>
+<td>tid</td>
+<td>跟踪唯一标识，排查问题时请提供</td>
+</tr>
+<tr>
+<td>success</td>
+<td>请求是否成功</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-创建会话">9. 创建会话</h2>
+<h3 id="接口信息">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/conversation/add</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>创建与智能体的新会话</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例">请求示例</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;variables&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;key1&quot;</span><span class="fu">:</span> <span class="st">&quot;value1&quot;</span><span class="fu">},</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;devMode&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="请求参数">请求参数</h3>
+<p><strong>请求头</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>必填</th>
+<th>描述</th>
+<th>示例值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>string</td>
+<td>是</td>
+<td>API Key</td>
+<td><code>Bearer ak-YOUR_API_KEY</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>请求体参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>agentId</td>
+<td>智能体 ID</td>
+<td>是</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>variables</td>
+<td>会话变量内容</td>
+<td>否</td>
+<td>object</td>
+</tr>
+<tr>
+<td>devMode</td>
+<td>开发模式，为 <code>true</code> 时智能体无需发布，变更实时生效</td>
+<td>否</td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应参数">响应参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code</td>
+<td>业务状态码，0000 表示成功，其余失败</td>
+<td>string</td>
+</tr>
+<tr>
+<td>displayCode</td>
+<td>源系统状态码，用于问题跟踪</td>
+<td>string</td>
+</tr>
+<tr>
+<td>message</td>
+<td>错误描述信息</td>
+<td>string</td>
+</tr>
+<tr>
+<td>data</td>
+<td>创建的会话 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>tid</td>
+<td>跟踪唯一标识</td>
+<td>string</td>
+</tr>
+<tr>
+<td>success</td>
+<td>是否成功</td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应示例">响应示例</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="dv">1545548</span><span class="fu">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;2734711776085221044&quot;</span><span class="fu">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例">cURL 示例</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/conversation/add&#39;</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-X</span> POST <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Content-Type: application/json&#39;</span> <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span> <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-raw</span> <span class="st">&#39;{&quot;agentId&quot;: 1596, &quot;variables&quot;: {&quot;key1&quot;: &quot;value1&quot;}, &quot;devMode&quot;: true}&#39;</span></span></code></pre></div>
+<h3 id="测试用例">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>创建已发布智能体的会话</td>
+<td>0000</td>
+<td>成功，返回会话 ID</td>
+</tr>
+<tr>
+<td>2</td>
+<td>创建会话（携带变量和开发模式）</td>
+<td>0000</td>
+<td>成功，返回会话 ID</td>
+</tr>
+<tr>
+<td>3</td>
+<td>创建不存在或已下架智能体的会话</td>
+<td>4000</td>
+<td>失败，提示"智能体不存在或已下架"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板">TypeScript 模板</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 请求参数</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConvCreateDto {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* 智能体ID */</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  agentId<span class="op">:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* 会话变量内容 */</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  variables<span class="op">?:</span> <span class="bu">Record</span><span class="op">&lt;</span><span class="dt">string</span><span class="op">,</span> <span class="dt">unknown</span><span class="op">&gt;;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* 开发模式，为true时，智能体无需发布，变更实时生效 */</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  devMode<span class="op">?:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">// 响应接口</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationCreateRes {</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"> * 创建会话</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">params</span><span class="co"> 请求参数</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">createConversation</span>(params<span class="op">:</span> ConvCreateDto)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>ConversationCreateRes<span class="op">&gt;</span> {</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">post</span>(<span class="vs">`/api/v1/chat/conversation/add`</span><span class="op">,</span> params)<span class="op">;</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="10-开始会话sse-流式">10. 开始会话（SSE 流式）</h2>
+<h3 id="接口信息-1">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/{conversationId}</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>text/event-stream</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>智能体会话接口，响应为 Server-Sent Events (SSE) 流，返回数据为 JSON 格式</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-1">请求示例</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;conversationId&quot;</span><span class="fu">:</span> <span class="dv">1545551</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;你好&quot;</span><span class="fu">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;debug&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;selectedComponents&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="请求参数-1">请求参数</h3>
+<p><strong>请求头</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>必填</th>
+<th>描述</th>
+<th>示例值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>string</td>
+<td>是</td>
+<td>API Key</td>
+<td><code>Bearer ak-YOUR_API_KEY</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>conversationId</td>
+<td>会话 ID</td>
+<td>是</td>
+<td>integer(int64)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>请求体参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>conversationId</td>
+<td>会话唯一标识</td>
+<td>是</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>variableParams</td>
+<td>变量参数，客户端需根据智能体配置组装</td>
+<td>否</td>
+<td>object</td>
+</tr>
+<tr>
+<td>message</td>
+<td>聊天消息</td>
+<td>否</td>
+<td>string</td>
+</tr>
+<tr>
+<td>attachments</td>
+<td>附件列表</td>
+<td>否</td>
+<td>array</td>
+</tr>
+<tr>
+<td>fileKey</td>
+<td>文件 Key</td>
+<td>否</td>
+<td>string</td>
+</tr>
+<tr>
+<td>fileUrl</td>
+<td>文件 URL</td>
+<td>是</td>
+<td>string</td>
+</tr>
+<tr>
+<td>fileName</td>
+<td>文件名称</td>
+<td>否</td>
+<td>string</td>
+</tr>
+<tr>
+<td>mimeType</td>
+<td>文件类型</td>
+<td>是</td>
+<td>string</td>
+</tr>
+<tr>
+<td>debug</td>
+<td>是否调试模式</td>
+<td>否</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>sandboxId</td>
+<td>用户选择的沙盒（我的电脑）ID</td>
+<td>否</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>selectedComponents</td>
+<td>手动选择的组件列表</td>
+<td>否</td>
+<td>array</td>
+</tr>
+<tr>
+<td>id</td>
+<td>组件 ID</td>
+<td>否</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>type</td>
+<td>组件类型，可用值：<code>Plugin, Workflow, Trigger, Knowledge, Variable, Database, Model, Agent, Table, Mcp, Page, Event, Skill, SubAgent</code></td>
+<td>否</td>
+<td>string</td>
+</tr>
+<tr>
+<td>skillIds</td>
+<td>客户端选中的技能 ID 列表</td>
+<td>否</td>
+<td>array</td>
+</tr>
+<tr>
+<td>filterSensitive</td>
+<td>长期记忆中是否过滤敏感信息</td>
+<td>否</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>modelId</td>
+<td>用户选择的模型 ID</td>
+<td>否</td>
+<td>integer(int64)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应参数-1">响应参数</h3>
+<p>响应为 SSE 格式的文本流，每个事件包含 <code>AgentOutputDto</code> 结构的 JSON 数据：</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>requestId</td>
+<td>请求唯一编号（任务编号）</td>
+<td>string</td>
+</tr>
+<tr>
+<td>eventType</td>
+<td>事件类型，可用值：<code>PROCESSING, PROCESSING_MESSAGE, MESSAGE, FINAL_RESULT, HEART_BEAT, ERROR</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>error</td>
+<td>会话出现异常时的错误信息</td>
+<td>string</td>
+</tr>
+<tr>
+<td>data</td>
+<td>各事件类型对应的数据</td>
+<td>object</td>
+</tr>
+<tr>
+<td>completed</td>
+<td>输出过程中为 <code>false</code>，最后一条消息返回 <code>true</code></td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<h3 id="事件说明">事件说明</h3>
+<h4 id="processing工具调用过程">PROCESSING（工具调用过程）</h4>
+<p>会话消息输出过程中，智能体可能调用不同工具。<code>PROCESSING</code> 消息定义工具调用的开始与结束。</p>
+<p><strong>data 参数说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>工具名称</td>
+<td>string</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>工具图标</td>
+<td>string</td>
+</tr>
+<tr>
+<td>type</td>
+<td>工具类型，包括 <code>Mcp, Plugin, Workflow, Table, Knowledge</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>status</td>
+<td>执行状态，<code>EXECUTING</code> 执行中，<code>FINISHED</code> 执行完成</td>
+<td>string</td>
+</tr>
+<tr>
+<td>result</td>
+<td>工具执行数据</td>
+<td>object</td>
+</tr>
+</tbody>
+</table>
+<h4 id="message消息内容">MESSAGE（消息内容）</h4>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>消息 ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td>role</td>
+<td>可用值：<code>USER, ASSISTANT</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>type</td>
+<td>可用值：<code>CHAT</code> 普通消息输出，<code>THINK</code> 思考消息，<code>PROCESS_OUTPUT</code> 工作流过程输出，<code>QUESTION</code> 工作流问答节点</td>
+<td>string</td>
+</tr>
+<tr>
+<td>text</td>
+<td>消息内容</td>
+<td>string</td>
+</tr>
+<tr>
+<td>time</td>
+<td>消息时间</td>
+<td>string</td>
+</tr>
+<tr>
+<td>attachments</td>
+<td>消息附件，一般用户消息才有</td>
+<td>array</td>
+</tr>
+<tr>
+<td>think</td>
+<td>思考内容</td>
+<td>string</td>
+</tr>
+<tr>
+<td>quotedText</td>
+<td>引用消息内容</td>
+<td>string</td>
+</tr>
+<tr>
+<td>messageType</td>
+<td>可用值：<code>USER, ASSISTANT</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>ext</td>
+<td>消息扩展内容</td>
+<td>array</td>
+</tr>
+<tr>
+<td>finished</td>
+<td>消息内容是否输出结束</td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<h4 id="heartbeat心跳">HEARTBEAT（心跳）</h4>
+<p>收到 <code>HEARTBEAT</code> 事件时可直接忽略。</p>
+<h4 id="final_result最终结果">FINAL_RESULT（最终结果）</h4>
+<p>会话结束后的最终结果，包含 token 使用统计和汇总消息内容。</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>success</td>
+<td>执行成功状态</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>error</td>
+<td>执行失败信息</td>
+<td>string</td>
+</tr>
+<tr>
+<td>startTime</td>
+<td>开始时间戳（毫秒）</td>
+<td>number</td>
+</tr>
+<tr>
+<td>endTime</td>
+<td>结束时间戳（毫秒）</td>
+<td>number</td>
+</tr>
+<tr>
+<td>completionTokens</td>
+<td>输出 token 数</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>promptTokens</td>
+<td>输入提示词 token 数</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>totalTokens</td>
+<td>总计 token 数</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>outputText</td>
+<td>汇总输出消息内容</td>
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<h3 id="curl-示例-1">cURL 示例</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-N</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/1545551&#39;</span> <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-X</span> POST <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Content-Type: application/json&#39;</span> <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span> <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-raw</span> <span class="st">&#39;{&quot;conversationId&quot;: 1545551, &quot;message&quot;: &quot;你好&quot;}&#39;</span></span></code></pre></div>
+<h3 id="typescript-模板-1">TypeScript 模板</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 附件信息</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> AttachmentDto {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  fileKey<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  fileUrl<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  fileName<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  mimeType<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 手动选择的组件</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> SelectedComponentDto {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  id<span class="op">:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  type<span class="op">?:</span> <span class="st">&#39;Plugin&#39;</span> <span class="op">|</span> <span class="st">&#39;Workflow&#39;</span> <span class="op">|</span> <span class="st">&#39;Trigger&#39;</span> <span class="op">|</span> <span class="st">&#39;Knowledge&#39;</span> <span class="op">|</span> <span class="st">&#39;Variable&#39;</span> <span class="op">|</span> <span class="st">&#39;Database&#39;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> <span class="st">&#39;Model&#39;</span> <span class="op">|</span> <span class="st">&#39;Agent&#39;</span> <span class="op">|</span> <span class="st">&#39;Table&#39;</span> <span class="op">|</span> <span class="st">&#39;Mcp&#39;</span> <span class="op">|</span> <span class="st">&#39;Page&#39;</span> <span class="op">|</span> <span class="st">&#39;Event&#39;</span> <span class="op">|</span> <span class="st">&#39;Skill&#39;</span> <span class="op">|</span> <span class="st">&#39;SubAgent&#39;</span><span class="op">;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">// 请求参数</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> TryReqDto {</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  conversationId<span class="op">:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  variableParams<span class="op">?:</span> <span class="bu">Record</span><span class="op">&lt;</span><span class="dt">string</span><span class="op">,</span> <span class="dt">unknown</span><span class="op">&gt;;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  message<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  attachments<span class="op">?:</span> AttachmentDto[]<span class="op">;</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  debug<span class="op">?:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  sandboxId<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  selectedComponents<span class="op">?:</span> SelectedComponentDto[]<span class="op">;</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  skillIds<span class="op">?:</span> <span class="dt">number</span>[]<span class="op">;</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  filterSensitive<span class="op">?:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  modelId<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">// 响应事件</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> AgentOutputDto {</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  requestId<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  eventType<span class="op">?:</span> <span class="st">&#39;PROCESSING&#39;</span> <span class="op">|</span> <span class="st">&#39;PROCESSING_MESSAGE&#39;</span> <span class="op">|</span> <span class="st">&#39;MESSAGE&#39;</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> <span class="st">&#39;FINAL_RESULT&#39;</span> <span class="op">|</span> <span class="st">&#39;HEART_BEAT&#39;</span> <span class="op">|</span> <span class="st">&#39;ERROR&#39;</span><span class="op">;</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  error<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  data<span class="op">?:</span> <span class="dt">unknown</span><span class="op">;</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  completed<span class="op">?:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co"> * 开始会话（SSE 流式响应）</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">conversationId</span><span class="co"> 会话 ID</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">params</span><span class="co"> 请求参数</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">startChat</span>(conversationId<span class="op">:</span> <span class="dt">number</span><span class="op">,</span> params<span class="op">:</span> TryReqDto)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;</span> {</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">post</span>(<span class="vs">`/api/v1/chat/</span><span class="sc">${</span>conversationId<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> params<span class="op">,</span> {</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    responseType<span class="op">:</span> <span class="st">&#39;text&#39;</span><span class="op">,</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    onDownloadProgress<span class="op">:</span> (<span class="bu">event</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 在此处理 SSE 事件流</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="11-查询智能体历史会话">11. 查询智能体历史会话</h2>
+<h3 id="接口信息-2">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/conversation/list</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td>无</td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>查询指定智能体的历史会话列表，使用游标分页（通过 lastId 翻页）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-2">请求示例</h3>
+<pre class="text"><code>GET /api/v1/chat/conversation/list?agentId=1596&amp;limit=5</code></pre>
+<h3 id="请求参数-2">请求参数</h3>
+<p><strong>查询参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>agentId</td>
+<td>智能体 ID</td>
+<td>是</td>
+<td>integer(int64)</td>
+<td></td>
+</tr>
+<tr>
+<td>lastId</td>
+<td>最后一条会话 ID，用于翻页</td>
+<td>否</td>
+<td>integer(int64)</td>
+<td></td>
+</tr>
+<tr>
+<td>limit</td>
+<td>返回数量限制</td>
+<td>否</td>
+<td>integer(int32)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>topic</td>
+<td>按会话主题模糊搜索</td>
+<td>否</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应参数data-为会话数组单条结构">响应参数（data 为会话数组，单条结构）</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>会话 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>tenantId</td>
+<td>租户 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>userId</td>
+<td>用户 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>uid</td>
+<td>会话 UUID</td>
+<td>string</td>
+</tr>
+<tr>
+<td>agentId</td>
+<td>智能体 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>topic</td>
+<td>会话主题</td>
+<td>string</td>
+</tr>
+<tr>
+<td>summary</td>
+<td>会话摘要</td>
+<td>string</td>
+</tr>
+<tr>
+<td>variables</td>
+<td>用户填写的会话变量内容</td>
+<td>object</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>修改时间</td>
+<td>string(date-time)</td>
+</tr>
+<tr>
+<td>created</td>
+<td>创建时间</td>
+<td>string(date-time)</td>
+</tr>
+<tr>
+<td>agent</td>
+<td>智能体信息</td>
+<td>object(AgentDetailDto)</td>
+</tr>
+<tr>
+<td>type</td>
+<td>会话类型，可用值：<code>Chat, TempChat, TASK, TaskCenter</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>taskId</td>
+<td>任务 ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td>taskStatus</td>
+<td>任务状态，可用值：<code>CREATE, EXECUTING, CANCEL, COMPLETE, FAILED</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>taskCron</td>
+<td>定时任务表达式</td>
+<td>string</td>
+</tr>
+<tr>
+<td>taskCronDesc</td>
+<td>定时任务表达式描述</td>
+<td>string</td>
+</tr>
+<tr>
+<td>devMode</td>
+<td>开发模式</td>
+<td>integer(int32)</td>
+</tr>
+<tr>
+<td>topicUpdated</td>
+<td>主题是否更新</td>
+<td>integer(int32)</td>
+</tr>
+<tr>
+<td>sandboxServerId</td>
+<td>沙盒服务器 ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td>sandboxSessionId</td>
+<td>沙盒会话 ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td>sharedUris</td>
+<td>已分享的 URI 地址</td>
+<td>array</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应示例-1">响应示例</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1545552</span><span class="fu">,</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;tenantId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;uid&quot;</span><span class="fu">:</span> <span class="st">&quot;3787cf89001f43bd832b7adeb8134d96&quot;</span><span class="fu">,</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;topic&quot;</span><span class="fu">:</span> <span class="st">&quot;自定义会话主题&quot;</span><span class="fu">,</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;summary&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;variables&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;modified&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:07:54.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;created&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:07:10.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;agent&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;TaskAgent&quot;</span><span class="fu">,</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;TaskAgentTest&quot;</span><span class="fu">,</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;hasPermission&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;collect&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;messageList&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Chat&quot;</span><span class="fu">,</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;taskId&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;taskStatus&quot;</span><span class="fu">:</span> <span class="st">&quot;CREATE&quot;</span><span class="fu">,</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;taskCron&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;taskCronDesc&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;devMode&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;topicUpdated&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;sandboxServerId&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;sandboxSessionId&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;sharedUris&quot;</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;4361141776087082287&quot;</span><span class="fu">,</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例-2">cURL 示例</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查询前 5 条会话</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/conversation/list?agentId=1596&amp;limit=5&#39;</span> <span class="dt">\</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 翻页查询</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/conversation/list?agentId=1596&amp;lastId=1545552&amp;limit=5&#39;</span> <span class="dt">\</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 按主题搜索</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/conversation/list?agentId=1596&amp;topic=Greeting&#39;</span> <span class="dt">\</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span></span></code></pre></div>
+<h3 id="测试用例-1">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>查询历史会话（默认分页）</td>
+<td>0000</td>
+<td>成功，返回最近 10 条会话</td>
+</tr>
+<tr>
+<td>2</td>
+<td>查询历史会话（指定 limit）</td>
+<td>0000</td>
+<td>成功，返回指定数量的会话</td>
+</tr>
+<tr>
+<td>3</td>
+<td>翻页查询（传入 lastId）</td>
+<td>0000</td>
+<td>成功，返回 lastId 之后的会话</td>
+</tr>
+<tr>
+<td>4</td>
+<td>按主题搜索会话</td>
+<td>0000</td>
+<td>成功，返回匹配的会话列表</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-2">TypeScript 模板</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationDto {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  id<span class="op">:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  tenantId<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  userId<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  uid<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  agentId<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  topic<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  summary<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  variables<span class="op">?:</span> <span class="bu">Record</span><span class="op">&lt;</span><span class="dt">string</span><span class="op">,</span> <span class="dt">unknown</span><span class="op">&gt;;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  modified<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  created<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  agent<span class="op">?:</span> <span class="dt">unknown</span><span class="op">;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  messageList<span class="op">?:</span> <span class="dt">unknown</span>[]<span class="op">;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  type<span class="op">?:</span> <span class="st">&#39;Chat&#39;</span> <span class="op">|</span> <span class="st">&#39;TempChat&#39;</span> <span class="op">|</span> <span class="st">&#39;TASK&#39;</span> <span class="op">|</span> <span class="st">&#39;TaskCenter&#39;</span><span class="op">;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  taskId<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  taskStatus<span class="op">?:</span> <span class="st">&#39;CREATE&#39;</span> <span class="op">|</span> <span class="st">&#39;EXECUTING&#39;</span> <span class="op">|</span> <span class="st">&#39;CANCEL&#39;</span> <span class="op">|</span> <span class="st">&#39;COMPLETE&#39;</span> <span class="op">|</span> <span class="st">&#39;FAILED&#39;</span><span class="op">;</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  taskCron<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  taskCronDesc<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  devMode<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  topicUpdated<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  sandboxServerId<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  sandboxSessionId<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  sharedUris<span class="op">?:</span> <span class="dt">string</span>[]<span class="op">;</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationListRes {</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> ConversationDto[]<span class="op">;</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co"> * 查询智能体历史会话</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getConversationList</span>(</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>  agentId<span class="op">:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>  params<span class="op">?:</span> { lastId<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span> limit<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span> topic<span class="op">?:</span> <span class="dt">string</span> }</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>ConversationListRes<span class="op">&gt;</span> {</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> query <span class="op">=</span> <span class="kw">new</span> <span class="fu">URLSearchParams</span>()<span class="op">;</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>  query<span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;agentId&#39;</span><span class="op">,</span> <span class="bu">String</span>(agentId))<span class="op">;</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (params<span class="op">?.</span><span class="at">lastId</span> <span class="op">!==</span> <span class="kw">undefined</span>) query<span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;lastId&#39;</span><span class="op">,</span> <span class="bu">String</span>(params<span class="op">.</span><span class="at">lastId</span>))<span class="op">;</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (params<span class="op">?.</span><span class="at">limit</span> <span class="op">!==</span> <span class="kw">undefined</span>) query<span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;limit&#39;</span><span class="op">,</span> <span class="bu">String</span>(params<span class="op">.</span><span class="at">limit</span>))<span class="op">;</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (params<span class="op">?.</span><span class="at">topic</span> <span class="op">!==</span> <span class="kw">undefined</span>) query<span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;topic&#39;</span><span class="op">,</span> params<span class="op">.</span><span class="at">topic</span>)<span class="op">;</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">get</span>(<span class="vs">`/api/v1/chat/conversation/list?</span><span class="sc">${</span>query<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="12-查询会话信息">12. 查询会话信息</h2>
+<h3 id="接口信息-3">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/conversation/{id}</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td>无</td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>查询指定会话的详细信息，包含会话中的历史消息</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-3">请求示例</h3>
+<pre class="text"><code>GET /api/v1/chat/conversation/1545551</code></pre>
+<h3 id="路径参数">路径参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>会话 ID</td>
+<td>是</td>
+<td>integer(int64)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应参数-2">响应参数</h3>
+<p><code>data</code> 为会话信息对象（结构同<a href="#11-查询智能体历史会话">第 11 节</a>的会话字段），并额外包含：</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>messageList</td>
+<td>会话消息列表</td>
+<td>array(ChatMessageDto)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应示例-2">响应示例</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1545551</span><span class="fu">,</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tenantId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;uid&quot;</span><span class="fu">:</span> <span class="st">&quot;c1e2c0c32a844127a829560641b9da57&quot;</span><span class="fu">,</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;topic&quot;</span><span class="fu">:</span> <span class="st">&quot;和 TaskAgentTest 开始会话&quot;</span><span class="fu">,</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;summary&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;variables&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modified&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:02:25.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;created&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:02:25.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;agent&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;spaceId&quot;</span><span class="fu">:</span> <span class="dv">57</span><span class="fu">,</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;creatorId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;uid&quot;</span><span class="fu">:</span> <span class="st">&quot;255233c81c144196819426878d7449bf&quot;</span><span class="fu">,</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;TaskAgent&quot;</span><span class="fu">,</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;TaskAgentTest&quot;</span><span class="fu">,</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;remark&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;publishDate&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-05T16:35:39.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;statistics&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;targetId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;userCount&quot;</span><span class="fu">:</span> <span class="dv">17</span><span class="fu">,</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;convCount&quot;</span><span class="fu">:</span> <span class="dv">964</span><span class="fu">,</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;collectCount&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;likeCount&quot;</span><span class="fu">:</span> <span class="dv">0</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;BusinessService&quot;</span><span class="fu">,</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;openSuggest&quot;</span><span class="fu">:</span> <span class="st">&quot;Close&quot;</span><span class="fu">,</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;manualComponents&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;allowCopy&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;hasPermission&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;allowOtherModel&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;allowAtSkill&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;allowPrivateSandbox&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;collect&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;messageList&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Chat&quot;</span><span class="fu">,</span></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;taskId&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;taskStatus&quot;</span><span class="fu">:</span> <span class="st">&quot;CREATE&quot;</span><span class="fu">,</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;taskCronDesc&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;devMode&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;topicUpdated&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;sandboxServerId&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;sandboxSessionId&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;sharedUris&quot;</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;8681381776085355631&quot;</span><span class="fu">,</span></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例-3">cURL 示例</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/conversation/1545551&#39;</span> <span class="dt">\</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span></span></code></pre></div>
+<h3 id="测试用例-2">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>查询存在的会话</td>
+<td>0000</td>
+<td>成功，返回会话详细信息（含智能体信息）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-3">TypeScript 模板</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationQueryRes {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> ConversationDto<span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"> * 查询会话信息</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">id</span><span class="co"> 会话 ID</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getConversation</span>(id<span class="op">:</span> <span class="dt">number</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>ConversationQueryRes<span class="op">&gt;</span> {</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">get</span>(<span class="vs">`/api/v1/chat/conversation/</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="13-更新会话主题">13. 更新会话主题</h2>
+<h3 id="接口信息-4">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/conversation/{conversationId}/update</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>更新指定会话的主题名称，可通过 <code>firstMessage</code> 或 <code>topic</code> 设置，二者至少提供一个</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-4">请求示例</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;firstMessage&quot;</span><span class="fu">:</span> <span class="st">&quot;你好，请问今天天气怎么样？&quot;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="请求体参数">请求体参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>firstMessage</td>
+<td>用户第一条消息</td>
+<td>是</td>
+<td>string</td>
+</tr>
+<tr>
+<td>topic</td>
+<td>会话主题，可与 firstMessage 二选一</td>
+<td>否</td>
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应参数-3">响应参数</h3>
+<p><code>data</code> 为更新后的会话信息（ConversationDto）。</p>
+<h3 id="响应示例-3">响应示例</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1545552</span><span class="fu">,</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tenantId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;uid&quot;</span><span class="fu">:</span> <span class="st">&quot;3787cf89001f43bd832b7adeb8134d96&quot;</span><span class="fu">,</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;topic&quot;</span><span class="fu">:</span> <span class="st">&quot;自定义会话主题&quot;</span><span class="fu">,</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;summary&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;variables&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modified&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:07:54.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;created&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:07:10.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;agent&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;TaskAgentTest&quot;</span><span class="fu">,</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;TaskAgent&quot;</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;messageList&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Chat&quot;</span><span class="fu">,</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;taskId&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;taskStatus&quot;</span><span class="fu">:</span> <span class="st">&quot;CREATE&quot;</span><span class="fu">,</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;devMode&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;topicUpdated&quot;</span><span class="fu">:</span> <span class="dv">1</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;2798491776085673993&quot;</span><span class="fu">,</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例-4">cURL 示例</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/conversation/1545552/update&#39;</span> <span class="dt">\</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-X</span> POST <span class="dt">\</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Content-Type: application/json&#39;</span> <span class="dt">\</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span> <span class="dt">\</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-raw</span> <span class="st">&#39;{&quot;firstMessage&quot;: &quot;你好，请问今天天气怎么样？&quot;}&#39;</span></span></code></pre></div>
+<h3 id="测试用例-3">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>使用 firstMessage 更新主题</td>
+<td>0000</td>
+<td>成功，主题更新为第一条消息内容</td>
+</tr>
+<tr>
+<td>2</td>
+<td>使用 topic 更新主题</td>
+<td>0000</td>
+<td>成功，主题更新为自定义内容</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-4">TypeScript 模板</h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationUpdateDto {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* 用户第一条消息 */</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  firstMessage<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* 会话主题，可与 firstMessage 二选一 */</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  topic<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationUpdateRes {</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> ConversationDto<span class="op">;</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co"> * 更新会话主题</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">updateConversation</span>(</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  conversationId<span class="op">:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  params<span class="op">:</span> ConversationUpdateDto</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>ConversationUpdateRes<span class="op">&gt;</span> {</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">post</span>(<span class="vs">`/api/v1/chat/conversation/</span><span class="sc">${</span>conversationId<span class="sc">}</span><span class="vs">/update`</span><span class="op">,</span> params)<span class="op">;</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="14-查询会话消息列表">14. 查询会话消息列表</h2>
+<h3 id="接口信息-5">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/{conversationId}/messages</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td>无</td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>查询指定会话中的消息列表，支持分页查询</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-5">请求示例</h3>
+<pre class="text"><code>GET /api/v1/chat/1545556/messages?index=174590&amp;limit=10</code></pre>
+<h3 id="查询参数">查询参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>消息索引起始位置</td>
+<td>否</td>
+<td>integer(int64)</td>
+<td></td>
+</tr>
+<tr>
+<td>limit</td>
+<td>返回消息数量限制</td>
+<td>否</td>
+<td>integer(int32)</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应参数data-为消息数组单条结构-chatmessagedto">响应参数（data 为消息数组，单条结构 ChatMessageDto）</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>消息索引</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>tenantId</td>
+<td>租户 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>senderType</td>
+<td>消息发送方类型，可用值：<code>USER, AGENT</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>senderId</td>
+<td>消息发送方 ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td>userId</td>
+<td>关联用户 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>agentId</td>
+<td>关联的智能体 ID</td>
+<td>integer(int64)</td>
+</tr>
+<tr>
+<td>id</td>
+<td>消息 ID</td>
+<td>string</td>
+</tr>
+<tr>
+<td>role</td>
+<td>消息角色，可用值：<code>USER, ASSISTANT, SYSTEM, FUNCTION</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>type</td>
+<td>消息类型，可用值：<code>CHAT, THINK, PROCESS_OUTPUT, QUESTION, ANSWER</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td>text</td>
+<td>消息内容</td>
+<td>string</td>
+</tr>
+<tr>
+<td>time</td>
+<td>消息时间</td>
+<td>string(date-time)</td>
+</tr>
+<tr>
+<td>attachments</td>
+<td>消息附件</td>
+<td>array(AttachmentDto)</td>
+</tr>
+<tr>
+<td>fileKey</td>
+<td>文件 Key</td>
+<td>string</td>
+</tr>
+<tr>
+<td>fileUrl</td>
+<td>文件 URL</td>
+<td>string</td>
+</tr>
+<tr>
+<td>fileName</td>
+<td>文件名称</td>
+<td>string</td>
+</tr>
+<tr>
+<td>mimeType</td>
+<td>文件类型</td>
+<td>string</td>
+</tr>
+<tr>
+<td>think</td>
+<td>思考内容</td>
+<td>string</td>
+</tr>
+<tr>
+<td>quotedText</td>
+<td>引用消息内容</td>
+<td>string</td>
+</tr>
+<tr>
+<td>finished</td>
+<td>消息内容是否输出结束</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>finishReason</td>
+<td>完成原因</td>
+<td>string</td>
+</tr>
+<tr>
+<td>componentExecutedList</td>
+<td>执行过程输出数据</td>
+<td>array</td>
+</tr>
+<tr>
+<td>metadata</td>
+<td>消息扩展内容</td>
+<td>object</td>
+</tr>
+<tr>
+<td>messageType</td>
+<td>消息类型，可用值：<code>USER, ASSISTANT, SYSTEM, TOOL</code></td>
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应示例-4">响应示例</h3>
+<div class="sourceCode" id="cb22"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;index&quot;</span><span class="fu">:</span> <span class="dv">174590</span><span class="fu">,</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;tenantId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;senderType&quot;</span><span class="fu">:</span> <span class="st">&quot;USER&quot;</span><span class="fu">,</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;senderId&quot;</span><span class="fu">:</span> <span class="st">&quot;1&quot;</span><span class="fu">,</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;d5be409c98f44928bcb1cd5a935912cf&quot;</span><span class="fu">,</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;role&quot;</span><span class="fu">:</span> <span class="st">&quot;USER&quot;</span><span class="fu">,</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;CHAT&quot;</span><span class="fu">,</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;帮我做一个简单的天气卡片网页，包含温度、天气图标和位置信息&quot;</span><span class="fu">,</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;time&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:19:09.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;think&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;quotedText&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;finished&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;finishReason&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;componentExecutedList&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;metadata&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;messageType&quot;</span><span class="fu">:</span> <span class="st">&quot;USER&quot;</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;index&quot;</span><span class="fu">:</span> <span class="dv">174591</span><span class="fu">,</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;tenantId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;senderType&quot;</span><span class="fu">:</span> <span class="st">&quot;AGENT&quot;</span><span class="fu">,</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;senderId&quot;</span><span class="fu">:</span> <span class="st">&quot;1596&quot;</span><span class="fu">,</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;userId&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;agentId&quot;</span><span class="fu">:</span> <span class="dv">1596</span><span class="fu">,</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;abc123&quot;</span><span class="fu">,</span></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;role&quot;</span><span class="fu">:</span> <span class="st">&quot;ASSISTANT&quot;</span><span class="fu">,</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;CHAT&quot;</span><span class="fu">,</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;你好！我是一个天气卡片...&quot;</span><span class="fu">,</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;time&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-04-13T13:19:15.000+00:00&quot;</span><span class="fu">,</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;attachments&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;think&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;quotedText&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;finished&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;finishReason&quot;</span><span class="fu">:</span> <span class="st">&quot;ENDTURN&quot;</span><span class="fu">,</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;componentExecutedList&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;metadata&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;messageType&quot;</span><span class="fu">:</span> <span class="st">&quot;ASSISTANT&quot;</span></span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;6044751776086475149&quot;</span><span class="fu">,</span></span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例-5">cURL 示例</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/1545556/messages?index=174590&amp;limit=10&#39;</span> <span class="dt">\</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span></span></code></pre></div>
+<h3 id="测试用例-4">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>查询会话消息（默认分页）</td>
+<td>0000</td>
+<td>成功，返回最近 10 条消息</td>
+</tr>
+<tr>
+<td>2</td>
+<td>查询会话消息（指定起始索引）</td>
+<td>0000</td>
+<td>成功，从指定索引开始返回</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-5">TypeScript 模板</h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationMessagesRes {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> ChatMessageDto[]<span class="op">;</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"> * 查询会话消息列表</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getConversationMessages</span>(</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  conversationId<span class="op">:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  index<span class="op">?:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  limit<span class="op">?:</span> <span class="dt">number</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>ConversationMessagesRes<span class="op">&gt;</span> {</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> params <span class="op">=</span> <span class="kw">new</span> <span class="fu">URLSearchParams</span>()<span class="op">;</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (index <span class="op">!==</span> <span class="kw">undefined</span>) params<span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;index&#39;</span><span class="op">,</span> <span class="bu">String</span>(index))<span class="op">;</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (limit <span class="op">!==</span> <span class="kw">undefined</span>) params<span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;limit&#39;</span><span class="op">,</span> <span class="bu">String</span>(limit))<span class="op">;</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> query <span class="op">=</span> params<span class="op">.</span><span class="fu">toString</span>() <span class="op">?</span> <span class="vs">`?</span><span class="sc">${</span>params<span class="sc">}</span><span class="vs">`</span> <span class="op">:</span> <span class="st">&#39;&#39;</span><span class="op">;</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">get</span>(<span class="vs">`/api/v1/chat/</span><span class="sc">${</span>conversationId<span class="sc">}</span><span class="vs">/messages</span><span class="sc">${</span>query<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="15-查询会话文件列表">15. 查询会话文件列表</h2>
+<h3 id="接口信息-6">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/{conversationId}/files</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td>无</td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>查询指定会话中的文件列表（例如通用型智能体执行任务时生成的文件）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-6">请求示例</h3>
+<pre class="text"><code>GET /api/v1/chat/1545555/files</code></pre>
+<h3 id="响应参数-4">响应参数</h3>
+<p><code>data</code> 为文件列表容器：</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>files</td>
+<td>文件列表</td>
+<td>array(FileItem)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FileItem 结构：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>文件路径</td>
+<td>string</td>
+</tr>
+<tr>
+<td>isDir</td>
+<td>是否为目录</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>fileProxyUrl</td>
+<td>文件代理 URL，用于访问该文件</td>
+<td>string</td>
+</tr>
+<tr>
+<td>isLink</td>
+<td>是否为链接</td>
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应示例-5">响应示例</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;files&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;html/index.html&quot;</span><span class="fu">,</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;isDir&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;fileProxyUrl&quot;</span><span class="fu">:</span> <span class="st">&quot;/api/v1/chat/1544687/file/html/index.html&quot;</span><span class="fu">,</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;isLink&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;4730801776086909275&quot;</span><span class="fu">,</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例-6">cURL 示例</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/1544687/files&#39;</span> <span class="dt">\</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span></span></code></pre></div>
+<h3 id="测试用例-5">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>查询会话文件列表</td>
+<td>0000</td>
+<td>成功，返回文件列表（无文件时为空数组）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-6">TypeScript 模板</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> FileItem {</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  name<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  isDir<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  fileProxyUrl<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  isLink<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ComputerFileListRes {</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  files<span class="op">:</span> FileItem[]<span class="op">;</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> ConversationFilesRes {</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> ComputerFileListRes<span class="op">;</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="co"> * 查询会话文件列表</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getConversationFiles</span>(conversationId<span class="op">:</span> <span class="dt">number</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>ConversationFilesRes<span class="op">&gt;</span> {</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">get</span>(<span class="vs">`/api/v1/chat/</span><span class="sc">${</span>conversationId<span class="sc">}</span><span class="vs">/files`</span>)<span class="op">;</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="16-访问会话文件">16. 访问会话文件</h2>
+<h3 id="接口信息-7">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/chat/{conversationId}/file/**</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td>无</td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code>（二进制流）</td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>静态文件访问，返回二进制流（图片、文件等）；文件相对路径通过<a href="#15-查询会话文件列表">第 15 节</a>返回的 <code>fileProxyUrl</code> 获取</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-7">请求示例</h3>
+<pre class="text"><code>GET /api/v1/chat/1544687/file/html/index.html</code></pre>
+<p><code>file/**</code> 中 <code>**</code> 部分为文件的相对路径。</p>
+<h3 id="curl-示例-7">cURL 示例</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载文件到本地</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/chat/1544687/file/html/index.html&#39;</span> <span class="dt">\</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span> <span class="dt">\</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> index.html</span></code></pre></div>
+<h3 id="typescript-模板-7">TypeScript 模板</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"> * 访问会话文件</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">conversationId</span><span class="co"> 会话 ID</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">filePath</span><span class="co"> 文件相对路径</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getConversationFile</span>(</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  conversationId<span class="op">:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  filePath<span class="op">:</span> <span class="dt">string</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="bu">Blob</span><span class="op">&gt;</span> {</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">get</span>(<span class="vs">`/api/v1/chat/</span><span class="sc">${</span>conversationId<span class="sc">}</span><span class="vs">/file/</span><span class="sc">${</span>filePath<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> {</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    responseType<span class="op">:</span> <span class="st">&#39;blob&#39;</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="17-执行插件">17. 执行插件</h2>
+<h3 id="接口信息-8">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/plugin/{id}/execute</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>运行指定插件，请求体为动态参数，按插件定义的入参传递</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-8">请求示例</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;query&quot;</span><span class="fu">:</span> <span class="st">&quot;test&quot;</span><span class="fu">,</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;count&quot;</span><span class="fu">:</span> <span class="dv">5</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="路径参数-1">路径参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>插件 ID</td>
+<td>是</td>
+<td>integer(int64)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求体参数-1">请求体参数</h3>
+<p>动态参数，根据插件定义的入参传递对应的 key-value 键值对。</p>
+<h3 id="响应参数-5">响应参数</h3>
+<p><code>data</code> 为插件执行返回的结果（结构因插件而异）。</p>
+<h3 id="响应示例-6">响应示例</h3>
+<div class="sourceCode" id="cb33"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;3103671776084713674&quot;</span><span class="fu">,</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例-8">cURL 示例</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/plugin/100/execute&#39;</span> <span class="dt">\</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-X</span> POST <span class="dt">\</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Content-Type: application/json&#39;</span> <span class="dt">\</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span> <span class="dt">\</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-raw</span> <span class="st">&#39;{&quot;query&quot;: &quot;test&quot;, &quot;count&quot;: 5}&#39;</span></span></code></pre></div>
+<h3 id="测试用例-6">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>执行已发布的插件</td>
+<td>0000</td>
+<td>成功，返回插件执行结果</td>
+</tr>
+<tr>
+<td>2</td>
+<td>执行不存在或未发布的插件</td>
+<td>0001</td>
+<td>失败，提示 "Error plugin id or not published"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-8">TypeScript 模板</h3>
+<div class="sourceCode" id="cb35"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> PluginExecuteRes {</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> <span class="dt">object</span> <span class="op">|</span> <span class="dt">null</span><span class="op">;</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="co"> * 执行插件</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">id</span><span class="co"> 插件 ID</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">params</span><span class="co"> 插件动态入参</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">executePlugin</span>(</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  id<span class="op">:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  params<span class="op">:</span> <span class="bu">Record</span><span class="op">&lt;</span><span class="dt">string</span><span class="op">,</span> <span class="dt">unknown</span><span class="op">&gt;</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>PluginExecuteRes<span class="op">&gt;</span> {</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">post</span>(<span class="vs">`/api/v1/plugin/</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">/execute`</span><span class="op">,</span> params)<span class="op">;</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="18-执行工作流">18. 执行工作流</h2>
+<h3 id="接口信息-9">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/workflow/{id}/execute</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>*/*</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>运行指定工作流，请求体为动态参数，按工作流定义的入参传递</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-9">请求示例</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;question&quot;</span><span class="fu">:</span> <span class="st">&quot;用户输入的问题&quot;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="路径参数-2">路径参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>工作流 ID</td>
+<td>是</td>
+<td>integer(int64)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求体参数-2">请求体参数</h3>
+<p>动态参数，根据工作流定义的入参传递对应的 key-value 键值对。</p>
+<h3 id="响应参数-6">响应参数</h3>
+<p><code>data</code> 为工作流执行返回的结果。</p>
+<h3 id="响应示例-7">响应示例</h3>
+<div class="sourceCode" id="cb37"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;code&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;displayCode&quot;</span><span class="fu">:</span> <span class="st">&quot;0000&quot;</span><span class="fu">,</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:</span> <span class="fu">{},</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tid&quot;</span><span class="fu">:</span> <span class="st">&quot;1234567890123456789&quot;</span><span class="fu">,</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;success&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="curl-示例-9">cURL 示例</h3>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/workflow/20/execute&#39;</span> <span class="dt">\</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-X</span> POST <span class="dt">\</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Content-Type: application/json&#39;</span> <span class="dt">\</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span> <span class="dt">\</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-raw</span> <span class="st">&#39;{&quot;question&quot;: &quot;用户输入问题&quot;}&#39;</span></span></code></pre></div>
+<h3 id="测试用例-7">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>状态码</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>执行已发布的工作流</td>
+<td>0000</td>
+<td>成功，返回工作流执行结果</td>
+</tr>
+<tr>
+<td>2</td>
+<td>执行不存在或未发布的工作流</td>
+<td>0001</td>
+<td>失败，提示 "Error workflow id or not published"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-9">TypeScript 模板</h3>
+<div class="sourceCode" id="cb39"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> WorkflowExecuteRes {</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  code<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  displayCode<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  message<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  data<span class="op">:</span> <span class="dt">object</span> <span class="op">|</span> <span class="dt">null</span><span class="op">;</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  success<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"> * 执行工作流</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">id</span><span class="co"> 工作流 ID</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">params</span><span class="co"> 工作流动态入参</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">executeWorkflow</span>(</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>  id<span class="op">:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>  params<span class="op">:</span> <span class="bu">Record</span><span class="op">&lt;</span><span class="dt">string</span><span class="op">,</span> <span class="dt">unknown</span><span class="op">&gt;</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>WorkflowExecuteRes<span class="op">&gt;</span> {</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">post</span>(<span class="vs">`/api/v1/workflow/</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">/execute`</span><span class="op">,</span> params)<span class="op">;</span></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="19-工作流流式执行">19. 工作流流式执行</h2>
+<h3 id="接口信息-10">接口信息</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接口地址</td>
+<td><code>/api/v1/workflow/{id}/sse/execute</code></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>请求数据类型</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>响应数据类型</td>
+<td><code>text/event-stream</code></td>
+</tr>
+<tr>
+<td>接口描述</td>
+<td>流式运行指定工作流，请求体为动态参数；响应为 SSE 流，返回工作流执行的中间结果</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求示例-10">请求示例</h3>
+<div class="sourceCode" id="cb40"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;question&quot;</span><span class="fu">:</span> <span class="st">&quot;用户输入的问题&quot;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="路径参数-3">路径参数</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+<th>是否必须</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>工作流 ID</td>
+<td>是</td>
+<td>integer(int64)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求体参数-3">请求体参数</h3>
+<p>动态参数，根据工作流定义的入参传递对应的 key-value 键值对。</p>
+<h3 id="curl-示例-10">cURL 示例</h3>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&#39;https://www.ciyuancenter.cc/api/v1/workflow/20/sse/execute&#39;</span> <span class="dt">\</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-X</span> POST <span class="dt">\</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Content-Type: application/json&#39;</span> <span class="dt">\</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">&#39;Authorization: Bearer ak-YOUR_API_KEY&#39;</span> <span class="dt">\</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-raw</span> <span class="st">&#39;{&quot;question&quot;: &quot;用户输入问题&quot;}&#39;</span></span></code></pre></div>
+<h3 id="测试用例-8">测试用例</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>场景</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>流式执行已发布的工作流</td>
+<td>成功，返回 SSE 事件流</td>
+</tr>
+<tr>
+<td>2</td>
+<td>流式执行不存在或未发布的工作流</td>
+<td>失败，返回错误响应</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typescript-模板-10">TypeScript 模板</h3>
+<div class="sourceCode" id="cb42"><pre class="sourceCode ts"><code class="sourceCode typescript"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"> * 工作流流式执行</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">id</span><span class="co"> 工作流 ID</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">params</span><span class="co"> 工作流动态入参</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">streamExecuteWorkflow</span>(</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  id<span class="op">:</span> <span class="dt">number</span><span class="op">,</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  params<span class="op">:</span> <span class="bu">Record</span><span class="op">&lt;</span><span class="dt">string</span><span class="op">,</span> <span class="dt">unknown</span><span class="op">&gt;</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">void</span><span class="op">&gt;</span> {</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> request<span class="op">.</span><span class="fu">post</span>(<span class="vs">`/api/v1/workflow/</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">/sse/execute`</span><span class="op">,</span> params<span class="op">,</span> {</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    responseType<span class="op">:</span> <span class="st">&#39;text&#39;</span><span class="op">,</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    onDownloadProgress<span class="op">:</span> (<span class="bu">event</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> chunk <span class="op">=</span> <span class="bu">event</span><span class="op">.</span><span class="at">currentTarget</span><span class="op">.</span><span class="at">response</span><span class="op">;</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 解析 SSE 格式：data: {...}</span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="20-附录状态码与事件类型速查">20. 附录：状态码与事件类型速查</h2>
+<h3 id="业务状态码">业务状态码</h3>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000</td>
+<td>成功</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>通用业务失败（如资源不存在或未发布）</td>
+</tr>
+<tr>
+<td>4000</td>
+<td>智能体不存在或已下架</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>出现非 0000 状态码时，请结合 <code>message</code> 与 <code>tid</code> 排查；联系技术支持时提供 <code>tid</code> 可快速定位问题。</p>
+</blockquote>
+<h3 id="sse-事件类型">SSE 事件类型</h3>
+<table>
+<thead>
+<tr>
+<th>事件类型</th>
+<th>含义</th>
+<th>处理建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PROCESSING</td>
+<td>工具调用开始 / 结束</td>
+<td>用于展示工具执行过程</td>
+</tr>
+<tr>
+<td>PROCESSING_MESSAGE</td>
+<td>工具执行的中间消息</td>
+<td>可展示为过程输出</td>
+</tr>
+<tr>
+<td>MESSAGE</td>
+<td>对话 / 思考 / 问答消息</td>
+<td>按 <code>type</code> 区分展示</td>
+</tr>
+<tr>
+<td>FINAL_RESULT</td>
+<td>最终结果（含 token 统计）</td>
+<td>标记会话结束</td>
+</tr>
+<tr>
+<td>HEART_BEAT</td>
+<td>心跳</td>
+<td>直接忽略</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>错误事件</td>
+<td>读取 <code>error</code> 字段并处理</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组件类型selectedcomponentstype">组件类型（selectedComponents.type）</h3>
+<p><code>Plugin</code> · <code>Workflow</code> · <code>Trigger</code> · <code>Knowledge</code> · <code>Variable</code> · <code>Database</code> · <code>Model</code> · <code>Agent</code> · <code>Table</code> · <code>Mcp</code> · <code>Page</code> · <code>Event</code> · <code>Skill</code> · <code>SubAgent</code></p>
+<blockquote>
+<p><strong>文档说明</strong></p>
+<p>本手册基于平台云端版本整理，界面可能随版本迭代略有调整，请以实际页面为准。 接口示例中的地址、ID、API Key 均为演示数据，实际使用时请替换为你自己平台的信息。</p>
+</blockquote>
+</div></body></html>

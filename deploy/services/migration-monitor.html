@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Singu X 迁移进度</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f7f8;color:#202629;font:14px/1.6 system-ui,sans-serif;letter-spacing:0}main{max-width:1050px;margin:40px auto;padding:0 24px}header{display:flex;justify-content:space-between;align-items:center;gap:16px}h1{font-size:24px;margin:0}h2{font-size:17px;margin:0 0 12px}.muted{color:#657178}#notice{padding:12px 0;color:#80610c;min-height:48px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.metric{background:white;border:1px solid #dce3e5;border-radius:6px;padding:18px}.number{font-size:28px;font-weight:650;white-space:nowrap}.band{padding:24px 0;border-bottom:1px solid #dce3e5}table{width:100%;border-collapse:collapse;text-align:left}th,td{padding:10px 8px;border-bottom:1px solid #e5e9eb;overflow-wrap:anywhere}th{font-size:12px;color:#657178}td:first-child{width:36%}.good{color:#18734c}.pending{color:#80610c}.status{font-weight:600}progress{width:100%;height:6px;accent-color:#16846d}button{border:1px solid #ced7da;background:white;border-radius:4px;padding:6px 12px;cursor:pointer;color:#29363b}footer{padding-top:20px;font-size:12px;color:#657178}.scroll{overflow-x:auto}@media(max-width:640px){main{margin:20px auto;padding:0 16px}.metrics{grid-template-columns:1fr}.number{font-size:24px}h1{font-size:20px}}
+</style></head><body><main>
+<header><div><h1>Singu X 迁移进度</h1><div class="muted">43.136.175.19 → 113.219.170.192</div></div><button id="refresh" title="刷新状态">刷新</button></header>
+<div id="notice" role="status">正在读取服务器状态…</div>
+<div class="metrics"><article class="metric"><div class="muted">镜像已接收</div><div id="images" class="number">—</div><progress id="bar"></progress><div id="imageNote" class="muted">等待采样</div></article><article class="metric"><div class="muted">当前传输速度</div><div id="speed" class="number">—</div><div class="muted">相邻 SSH 采样的平均速度</div></article><article class="metric"><div class="muted">业务文件已接收</div><div id="business" class="number">—</div><div id="businessNote" class="muted">等待校验状态</div></article></div>
+<section class="band"><h2>部署阶段</h2><table><tbody id="stages"></tbody></table></section>
+<section class="band"><h2>增量审计快照</h2><div class="muted">审计时间：2026-10-10 06:42 / 06:57（北京时间）；以下为固定审计记录，不是实时同步结果。</div><p>111 张表中 82 张一致、29 张有差异；两端均为 190 位用户。3 条用户差异仅为登录及更新时间，账号与密码字段摘要一致。</p><p class="pending">增量尚未应用。5 条操作日志存在同主键不同内容；知识库与定时任务仍有后续变化。保留目标任务冻结，不覆盖用户、业务配置或日志。</p></section>
+<section class="band"><h2>模型协议验收快照</h2><div class="muted">验收时间：2026-10-10 16:19（北京时间）；内网合成上游，不是实时外部模型可用性。</div><p class="good">配置测试 SSE、授权 JSON 内容及 usage、授权中文流式响应、无效 Key 拒绝均通过。临时模型、Key 和监听已清理。</p><p class="pending">仅目标服务器修复直连凭据误发代理的 403；旧官网未部署该补丁。真实模型出站、公网及源后续增量仍待完成。</p></section>
+<section class="band"><h2>迁移基线三方核对</h2><div class="muted">2026-10-10 16:29（北京时间）完成；对照原始导出与上述 06:42 两端快照，不代表当前最新数据。</div><p>原始 SQL 在无网络、无公开端口的独立审计数据库恢复：111 张表、60,201 行。摘要核对完成后审计容器已停止，业务数据库及运行容器不变。</p><p class="pending">已区分源端新增 318、更新 334、删除 76 行，目标独有新增 2、更新 2 行；双端不同修改 20 行，新建主键碰撞 5 行。仅分类，不覆盖、不删除、不解冻任务；增量尚未同步。</p></section>
+<section class="band"><h2>智能体电脑登录验收快照</h2><div class="muted">2026-10-10 16:49（北京时间）；目标内网普通管理员登录，未验证公网画面与模型任务。</div><p class="good">已修复容器 healthy 但桌面未就绪：统一 VNC 端口和真实就绪标记。登录启动、状态、鉴权页面、匿名拒绝、鉴权 WebSocket、保活 6 项通过，临时资源已清理。</p><p class="pending">仅新服务器部署电脑镜像修复；旧官网未更新。公网、真实模型出站和源增量仍未完成。</p></section>
+<section class="band"><h2>目标服务器运行容器</h2><div class="scroll"><table><thead><tr><th>容器</th><th>运行状态</th><th>端口</th></tr></thead><tbody id="containers"></tbody></table></div></section>
+<section class="band"><h2>网页应用登录验收快照</h2><div class="muted">2026-10-10 17:04（北京时间）；仅目标内网，不是公网或模型生成验收。</div><p class="good">正常登录模板创建、项目信息与文件、启动开发、鉴权预览 HTML、保活 5 项通过，临时项目已正常删除。</p><p class="pending">停止开发首次失败、第二次成功；清理重试不代表服务端停止时序问题已修复。当前开发进程共享 file-server，独立资源隔离、模型生成、发布及公网仍待验收。</p></section>
+<section class="band"><h2>最新增量边界检查</h2><div class="muted">2026-10-10 17:10 / 17:11（北京时间）；两端独立只读快照，不是同步完成状态。</div><p>源 113 表、162,109 行；目标 111 表、60,218 行，两端用户各 190。源新增 2 张自定义数据表，原摘要与报告均保留。</p><p class="pending">结构变化需要审查，尚未应用增量。源知识库文档 219 / 目标 125，原始分段 90,416 / 1,996；必须联动补齐文件和索引，不能宣称当前已无损同步。</p></section>
+<footer>采样间隔 15 秒 · <span id="time">尚未采样</span><br>在线快照不包含后续新增数据；传输完成不代表文件恢复、业务验收或域名切换完成。</footer>
+</main><script>
+const $=id=>document.getElementById(id);
+const size=n=>(n/1e9).toFixed(2)+' GB';
+function row(cells,cls){const tr=document.createElement('tr');cells.forEach((value,i)=>{const td=document.createElement('td');td.textContent=value;if(i===1&&cls)td.className=cls;tr.append(td)});return tr}
+let busy=false;
+async function update(){if(busy)return;busy=true;try{
+ const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const s=await r.json();
+ $('notice').textContent=s.error?'SSH 采样失败（'+s.error+'），以下保留上次成功数据。':s.updated?'实时状态已更新；完整平台尚需业务验收。':'正在读取服务器状态…';
+ if(!s.updated)return;
+ $('images').textContent=size(s.imageBytes);$('business').textContent=size(s.businessBytes);
+ $('speed').textContent=s.imageArchiveReceived?'接收已结束':s.bytesPerSecond==null?'等待下一次采样':(s.bytesPerSecond/1e6).toFixed(2)+' MB/s';
+ $('imageNote').textContent=s.imagesVerified?'已导入，两端 SHA256 与镜像 ID 校验通过':s.imageArchiveReceived?'归档已接收，正在导入并校验镜像':'边压缩边传输，总大小未知';
+ if(s.imagesVerified){$('bar').value=1;$('bar').max=1}else $('bar').removeAttribute('value');
+ $('businessNote').textContent=s.businessVerified?'传输完成，两端 SHA256 一致':'传输或校验尚未完成';
+ const statuses=Object.values(s.sourceRecords||{}).concat(Object.values(s.records||{})).map(x=>x.status||'');
+ const failed=statuses.filter(x=>x.includes('FAILED'));if(failed.length)$('notice').textContent='迁移任务失败：'+failed.join('、');
+ const staged=s.records['business-staging-result.json']?.status==='BUSINESS_CORE_STAGED';
+ const workspace=s.records['workspace-staging-result.json']?.status==='WORKSPACE_SAFE_STAGED';
+ const uploads=s.records['uploads-restore-result.json']?.status==='UPLOADS_VOLUME_RESTORED';
+ const objects=s.records['minio-restore-result.json']?.status==='MINIO_EXPORTED_OBJECTS_RESTORED';
+ const fulltext=s.records['elasticsearch-restore-result.json']?.status==='ELASTICSEARCH_DOCUMENTS_RESTORED';
+ const vectors=s.records['vector-restore-result.json']?.status==='VISIBLE_VECTORS_RESTORED';
+ const vectorPersistence=s.records['vector-persistence-verification.json']?.status==='VECTOR_RESTART_PERSISTENCE_VERIFIED'||s.records['vector-content-verification.json']?.status==='VECTOR_RESTART_PERSISTENCE_VERIFIED';
+ const fileStatus=uploads?'上传卷已恢复；对象'+(objects?'已恢复':'待恢复')+'，全文'+(fulltext?'已恢复':'待恢复')+'，向量'+(vectors?'已恢复':'待恢复'):workspace?'核心文件及工作区已解包，服务恢复未完成':staged?'核心文件已解包，服务恢复未完成':'未验收';
+ const restored=uploads&&objects&&fulltext&&vectors;
+ const app=s.records['app-start-result.json']?.status==='APP_HTTP_READY';
+ const auth=s.records['app-auth-result.json']?.loginPassed;
+ const runtime=s.records['runtime-verification.json']?.passed;
+ const uploadChecked=s.records['app-auth-result.json']?.status==='APP_AUTH_UPLOAD_CHECKED';
+ const mcp=s.records['mcp-verification.json']?.passed;
+ const docs=s.records['docs-deployment-result.json']?.status==='DOCS_DEPLOYED';
+ const mcpLogging=s.records['mcp-logging-20261010/business-log-verification.json']?.status==='MCP_FAILURE_LOGS_BUSINESS_VERIFIED';
+ const appStatus=app?'已启动'+(auth?'；登录及列表已测':'；待登录测试')+(uploadChecked?'；上传回读已测':'')+(runtime?'；沙箱已测':'')+(mcp?'；MCP只读调用已测':'')+(docs?'；文档已部署':'')+'；公网/模型/增量待验收':'未验收';
+ const stages=[['数据库恢复',s.databaseRestored?'已恢复':'未完成',s.databaseRestored],['镜像传输及导入',s.imagesVerified?'已校验':s.imageArchiveReceived?'镜像导入 / 校验中':'传输 / 校验中',s.imagesVerified],['业务包传输',s.businessVerified?'已校验':'传输 / 校验中',s.businessVerified],['文件、对象与索引恢复',restored?'导出快照已恢复，后续增量待同步':fileStatus,restored],['向量重启持久化',vectorPersistence?'重启后完整内容与检索通过':'待验收',vectorPersistence],['平台功能及访问验收',appStatus,false]];
+ $('stages').replaceChildren(...stages.map(x=>row(x.slice(0,2),x[2]?'good status':'pending status')));
+ $('stages').append(row(['MCP 失败日志补丁',mcpLogging?'部署及调用失败日志查询通过':s.records['mcp-logging-20261010/result.json']?.status==='MIGRATION_MCP_LOGGING_UPDATED'?'已部署，待业务日志验收':'待部署/验收'],mcpLogging?'good status':'pending status'));
+ $('containers').replaceChildren(...s.containers.map(x=>row([x.Names,x.Status,x.Ports||'—'])));
+ $('time').textContent='上次成功采样 '+new Date(s.updated*1000).toLocaleString();
+ }catch(e){$('notice').textContent='本地进度服务连接失败，显示数据可能已过期。'}finally{busy=false}}
+$('refresh').onclick=update;update();setInterval(update,3000);
+</script></body></html>

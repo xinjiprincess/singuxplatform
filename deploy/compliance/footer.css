@@ -1,0 +1,30 @@
+:root { --singux-filing-height: calc(36px + env(safe-area-inset-bottom, 0px)); }
+body #root {
+  height: calc(100vh - var(--singux-filing-height)) !important;
+  height: calc(100dvh - var(--singux-filing-height)) !important;
+  min-height: 0;
+  overflow: auto;
+}
+#singux-site-filing {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 20px;
+  box-sizing: border-box;
+  width: 100vw;
+  height: var(--singux-filing-height);
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: var(--xagi-color-bg-container, #fff);
+  color: var(--xagi-color-text-secondary, #595959);
+  font: 12px/20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-align: center;
+}
+#singux-site-filing a { color: inherit; white-space: nowrap; text-decoration: none; }
+#singux-site-filing a:hover, #singux-site-filing a:focus-visible { text-decoration: underline; }
+#singux-site-filing a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+@media (max-width: 320px) { :root { --singux-filing-height: calc(60px + env(safe-area-inset-bottom, 0px)); } }

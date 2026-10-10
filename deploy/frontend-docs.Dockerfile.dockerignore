@@ -1,0 +1,8 @@
+*
+!dist/
+!dist/**
+!public/
+!public/docs/
+!public/docs/**
+!k8s/
+!k8s/default.conf.template

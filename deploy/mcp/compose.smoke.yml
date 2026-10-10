@@ -1,0 +1,20 @@
+name: singux-mcp-recovery-test
+services:
+  mcp-proxy:
+    image: singux/mcp-proxy:0.2.8-20261009-recovery-r1
+    init: true
+    environment:
+      UV_PYTHON_DOWNLOADS: never
+      UV_CACHE_DIR: /tmp/uv-cache
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 768m
+    cpus: 1.0
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=256m
+      - /app/logs:rw,nosuid,nodev,size=32m,uid=10001,gid=10001
+      - /home/mcp:rw,exec,nosuid,nodev,size=256m,uid=10001,gid=10001
+    ports:
+      - 127.0.0.1:18021:8080

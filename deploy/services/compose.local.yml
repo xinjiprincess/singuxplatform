@@ -1,0 +1,99 @@
+name: singux-services-local
+services:
+  mcp-proxy:
+    image: singux/mcp-proxy:0.2.8-20261009-recovery-r1
+    init: true
+    restart: unless-stopped
+    environment:
+      UV_PYTHON_DOWNLOADS: never
+      UV_CACHE_DIR: /tmp/uv-cache
+      TOKIO_WORKER_THREADS: '2'
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 512
+    mem_limit: 1536m
+    cpus: 1
+    ports: ['127.0.0.1:18022:8080']
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=256m
+      - /app/logs:rw,nosuid,nodev,size=32m,uid=10001,gid=10001
+      - /home/mcp:rw,exec,nosuid,nodev,size=256m,uid=10001,gid=10001
+    networks:
+      platform:
+        aliases: [singux-mcp]
+  gateway:
+    image: nginx:1.25-alpine
+    volumes:
+      - ./gateway.conf:/etc/nginx/nginx.conf:ro
+    ports: ['127.0.0.1:18088:8088', '127.0.0.1:14000:4000']
+    mem_limit: 64m
+    cpus: 0.25
+    pids_limit: 64
+    restart: unless-stopped
+    networks:
+      platform:
+        aliases: [singux-service-gateway]
+  init:
+    image: singux/file-server:1.5.4-20260929-local
+    user: root
+    entrypoint: [sh, -ec]
+    command: ['mkdir -p /data/projects /data/computer /data/templates /data/logs /data/dist /data/uploads; cp -n /seed/*.zip /data/templates/; chown node:node /data /data/projects /data/computer /data/templates /data/logs /data/dist /data/uploads']
+    volumes:
+      - workspace:/data
+      - D:/singuxplatform/rcoder/docker/project_init:/seed:ro
+  file-server:
+    image: singux/file-server:1.5.4-20260929-local
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    environment:
+      PORT: '60000'
+      PROJECT_SOURCE_DIR: /data/projects
+      COMPUTER_WORKSPACE_DIR: /data/computer
+      INIT_PROJECT_DIR: /data/templates
+      DIST_TARGET_DIR: /data/dist
+      UPLOAD_PROJECT_DIR: /data/uploads
+      LOG_BASE_DIR: /data/logs
+    volumes:
+      - workspace:/data
+    ports: ['127.0.0.1:16000:60000']
+    mem_limit: 768m
+    cpus: 1
+    pids_limit: 512
+    restart: unless-stopped
+    networks:
+      platform:
+        aliases: [singux-file-service]
+  rcoder:
+    image: singux/rcoder:20260929-local
+    entrypoint: [/app/bin/rcoder]
+    command: [--port, '8090', --projects-dir, /data/projects, --enable-proxy, --proxy-port, '8088']
+    working_dir: /app
+    environment:
+      RCODER_PORT: '8090'
+      RUST_LOG: info
+    volumes:
+      - ./rcoder.yml:/app/config.yml:ro
+      - workspace:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports: ['127.0.0.1:8086:8090', '127.0.0.1:8088:8088']
+    mem_limit: 768m
+    cpus: 1
+    pids_limit: 512
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, curl, -fsS, http://127.0.0.1:8090/health]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    networks:
+      platform:
+        aliases: [singux-rcoder]
+volumes:
+  workspace:
+networks:
+  platform:
+    external: true
+    name: singux-local_default

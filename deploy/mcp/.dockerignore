@@ -1,0 +1,8 @@
+*
+!Dockerfile
+!config.yml
+!mcp-v0.2.8.tar.xz
+!Dockerfile.recovery
+!fixture/
+!fixture/package.json
+!fixture/package-lock.json

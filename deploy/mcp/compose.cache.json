@@ -1,0 +1,15 @@
+{
+  "services": {
+    "mcp-proxy": {
+      "tmpfs": ["/app/logs:rw,nosuid,nodev,size=32m,uid=10001,gid=10001"],
+      "volumes": [
+        "singux_mcp-home-cache:/home/mcp",
+        "singux_mcp-tmp-cache:/tmp"
+      ]
+    }
+  },
+  "volumes": {
+    "singux_mcp-home-cache": {"external": true, "name": "singux_mcp-home-cache"},
+    "singux_mcp-tmp-cache": {"external": true, "name": "singux_mcp-tmp-cache"}
+  }
+}

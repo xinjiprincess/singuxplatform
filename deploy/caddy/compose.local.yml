@@ -1,0 +1,23 @@
+name: singux-local-edge
+services:
+  caddy:
+    image: caddy:2
+    ports:
+      - "127.0.0.1:18090:80"
+    volumes:
+      - ./Caddyfile.local:/etc/caddy/Caddyfile:ro
+      - ../../dist:/srv:ro
+    networks:
+      - edge
+      - local-test
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+networks:
+  edge:
+  local-test:
+    external: true
+    name: singux-local_default

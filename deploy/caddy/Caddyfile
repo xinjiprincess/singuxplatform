@@ -1,0 +1,20 @@
+{
+    email {$ACME_EMAIL}
+    acme_ca {$ACME_CA:https://acme-staging-v02.api.letsencrypt.org/directory}
+    admin off
+}
+
+www.ciyuancenter.cc {
+    encode zstd gzip
+    handle /api/* {
+        reverse_proxy backend:8081 {
+            header_up -Forwarded
+            header_up X-Forwarded-Proto {scheme}
+            header_up X-Forwarded-Host {host}
+            header_up X-Forwarded-For {remote_host}
+        }
+    }
+    handle {
+        reverse_proxy frontend:80
+    }
+}

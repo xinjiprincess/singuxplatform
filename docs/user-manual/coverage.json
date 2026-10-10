@@ -1,0 +1,597 @@
+[
+  {
+    "slug": "2025年上半年新手机产品盘点",
+    "name": "2025年上半年新手机产品盘点.md",
+    "title": "手机产品知识库示例（历史数据）",
+    "source": "2025年上半年新手机产品盘点.html",
+    "rewritten": false
+  },
+  {
+    "slug": "agent-computer-deploy",
+    "name": "agent-computer-deploy.md",
+    "title": "智能体执行环境部署",
+    "source": "agent-computer-deploy.html",
+    "rewritten": true
+  },
+  {
+    "slug": "agent-design",
+    "name": "agent-design.md",
+    "title": "智能体编排",
+    "source": "agent-design.html",
+    "rewritten": false
+  },
+  {
+    "slug": "agent-orchestration",
+    "name": "agent-orchestration.md",
+    "title": "智能体编排方式总览",
+    "source": "agent-orchestration.html",
+    "rewritten": false
+  },
+  {
+    "slug": "api-key",
+    "name": "api-key.md",
+    "title": "获取API Key",
+    "source": "api-key.html",
+    "rewritten": false
+  },
+  {
+    "slug": "common-words",
+    "name": "common-words.md",
+    "title": "常见术语",
+    "source": "common-words.html",
+    "rewritten": false
+  },
+  {
+    "slug": "component-integration",
+    "name": "component-integration.md",
+    "title": "组件接入 - 独立会话页面",
+    "source": "component-integration.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-chat",
+    "name": "conversation-chat.md",
+    "title": "开始会话",
+    "source": "conversation-chat.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-create",
+    "name": "conversation-create.md",
+    "title": "创建会话",
+    "source": "conversation-create.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-file-access",
+    "name": "conversation-file-access.md",
+    "title": "访问会话文件",
+    "source": "conversation-file-access.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-files",
+    "name": "conversation-files.md",
+    "title": "查询会话文件列表",
+    "source": "conversation-files.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-list",
+    "name": "conversation-list.md",
+    "title": "查询智能体历史会话",
+    "source": "conversation-list.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-messages",
+    "name": "conversation-messages.md",
+    "title": "查询会话消息列表",
+    "source": "conversation-messages.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-query",
+    "name": "conversation-query.md",
+    "title": "查询会话信息",
+    "source": "conversation-query.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-stop",
+    "name": "conversation-stop.md",
+    "title": "停止会话",
+    "source": "conversation-stop.html",
+    "rewritten": false
+  },
+  {
+    "slug": "conversation-update",
+    "name": "conversation-update.md",
+    "title": "更新会话主题",
+    "source": "conversation-update.html",
+    "rewritten": false
+  },
+  {
+    "slug": "deploy",
+    "name": "deploy.md",
+    "title": "平台安装、构建与增量更新",
+    "source": "deploy.html",
+    "rewritten": true
+  },
+  {
+    "slug": "dialog-agent",
+    "name": "dialog-agent.md",
+    "title": "对话框智能体",
+    "source": "dialog-agent.html",
+    "rewritten": false
+  },
+  {
+    "slug": "docker-client-deploy",
+    "name": "docker-client-deploy.md",
+    "title": "客户端与平台连接",
+    "source": "docker-client-deploy.html",
+    "rewritten": true
+  },
+  {
+    "slug": "docker-performance-optimization",
+    "name": "docker-performance-optimization.md",
+    "title": "Docker 多容器性能优化完整指南",
+    "source": "docker-performance-optimization.html",
+    "rewritten": false
+  },
+  {
+    "slug": "ecosystem-market",
+    "name": "ecosystem-market.md",
+    "title": "共享资源与模板",
+    "source": "ecosystem-market.html",
+    "rewritten": true
+  },
+  {
+    "slug": "first-agent",
+    "name": "first-agent.md",
+    "title": "我的第一个智能体",
+    "source": "first-agent.html",
+    "rewritten": false
+  },
+  {
+    "slug": "first-task-agent",
+    "name": "first-task-agent.md",
+    "title": "通用型智能体指南",
+    "source": "first-task-agent.html",
+    "rewritten": false
+  },
+  {
+    "slug": "frequently-asked-questions",
+    "name": "frequently-asked-questions.md",
+    "title": "常见问题（FAQ）",
+    "source": "frequently-asked-questions.html",
+    "rewritten": false
+  },
+  {
+    "slug": "general-agent",
+    "name": "general-agent.md",
+    "title": "通用型智能体编排详解",
+    "source": "general-agent.html",
+    "rewritten": false
+  },
+  {
+    "slug": "im-channel-integration",
+    "name": "im-channel-integration.md",
+    "title": "IM 渠道对接文档",
+    "source": "im-channel-integration.html",
+    "rewritten": false
+  },
+  {
+    "slug": "job",
+    "name": "job.md",
+    "title": "任务中心",
+    "source": "job.html",
+    "rewritten": false
+  },
+  {
+    "slug": "kb",
+    "name": "kb.md",
+    "title": "RAG知识库与知识图谱功能介绍",
+    "source": "kb.html",
+    "rewritten": false
+  },
+  {
+    "slug": "kefu",
+    "name": "kefu.md",
+    "title": "零代码生成客服智能体",
+    "source": "kefu.html",
+    "rewritten": false
+  },
+  {
+    "slug": "llm",
+    "name": "llm.md",
+    "title": "大模型接入",
+    "source": "llm.html",
+    "rewritten": false
+  },
+  {
+    "slug": "log-query",
+    "name": "log-query.md",
+    "title": "日志查询",
+    "source": "log-query.html",
+    "rewritten": false
+  },
+  {
+    "slug": "mcp",
+    "name": "mcp.md",
+    "title": "MCP接入与开放",
+    "source": "mcp.html",
+    "rewritten": false
+  },
+  {
+    "slug": "model-management",
+    "name": "model-management.md",
+    "title": "模型管理说明文档",
+    "source": "model-management.html",
+    "rewritten": false
+  },
+  {
+    "slug": "model-relay-service",
+    "name": "model-relay-service.md",
+    "title": "模型对外提供接口服务",
+    "source": "model-relay-service.html",
+    "rewritten": false
+  },
+  {
+    "slug": "nuwa-eco-platform-user-manual",
+    "name": "external-resources.md",
+    "title": "外部资源接入与管理",
+    "source": "nuwa-eco-platform-user-manual.html",
+    "rewritten": true
+  },
+  {
+    "slug": "open-agreement",
+    "name": "open-agreement.md",
+    "title": "开放使用与许可证边界",
+    "source": "open-agreement.html",
+    "rewritten": true
+  },
+  {
+    "slug": "open-api-file-ak",
+    "name": "open-api-file-ak.md",
+    "title": "获取文件访问AK",
+    "source": "open-api-file-ak.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-file-upload",
+    "name": "open-api-file-upload.md",
+    "title": "文件上传",
+    "source": "open-api-file-upload.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-model-add",
+    "name": "open-api-model-add.md",
+    "title": "添加模型配置",
+    "source": "open-api-model-add.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-model-delete",
+    "name": "open-api-model-delete.md",
+    "title": "删除模型配置",
+    "source": "open-api-model-delete.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-model-detail",
+    "name": "open-api-model-detail.md",
+    "title": "查询模型配置详情",
+    "source": "open-api-model-detail.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-model-list",
+    "name": "open-api-model-list.md",
+    "title": "查询模型配置列表",
+    "source": "open-api-model-list.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-model-update",
+    "name": "open-api-model-update.md",
+    "title": "更新模型配置",
+    "source": "open-api-model-update.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-plugin-execute",
+    "name": "open-api-plugin-execute.md",
+    "title": "执行插件",
+    "source": "open-api-plugin-execute.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-add",
+    "name": "open-api-space-add.md",
+    "title": "创建团队空间",
+    "source": "open-api-space-add.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-delete",
+    "name": "open-api-space-delete.md",
+    "title": "删除团队空间",
+    "source": "open-api-space-delete.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-list",
+    "name": "open-api-space-list.md",
+    "title": "查询用户空间列表",
+    "source": "open-api-space-list.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-model-add",
+    "name": "open-api-space-model-add.md",
+    "title": "添加空间模型配置",
+    "source": "open-api-space-model-add.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-model-delete",
+    "name": "open-api-space-model-delete.md",
+    "title": "删除模型配置",
+    "source": "open-api-space-model-delete.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-model-detail",
+    "name": "open-api-space-model-detail.md",
+    "title": "查询模型配置详情",
+    "source": "open-api-space-model-detail.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-model-list",
+    "name": "open-api-space-model-list.md",
+    "title": "查询空间可使用模型列表",
+    "source": "open-api-space-model-list.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-model-update",
+    "name": "open-api-space-model-update.md",
+    "title": "更新空间模型配置",
+    "source": "open-api-space-model-update.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-space-update",
+    "name": "open-api-space-update.md",
+    "title": "更新团队空间",
+    "source": "open-api-space-update.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-ticket-redirect",
+    "name": "open-api-ticket-redirect.md",
+    "title": "根据ticket认证校验并跳转",
+    "source": "open-api-ticket-redirect.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-add",
+    "name": "open-api-user-add.md",
+    "title": "添加用户",
+    "source": "open-api-user-add.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-detail",
+    "name": "open-api-user-detail.md",
+    "title": "查询用户详细信息",
+    "source": "open-api-user-detail.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-disable",
+    "name": "open-api-user-disable.md",
+    "title": "禁用用户",
+    "source": "open-api-user-disable.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-enable",
+    "name": "open-api-user-enable.md",
+    "title": "启用用户",
+    "source": "open-api-user-enable.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-list",
+    "name": "open-api-user-list.md",
+    "title": "分页查询用户列表",
+    "source": "open-api-user-list.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-space-list",
+    "name": "open-api-user-space-list.md",
+    "title": "查询用户空间列表",
+    "source": "open-api-user-space-list.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-ticket-clear",
+    "name": "open-api-user-ticket-clear.md",
+    "title": "清除用户ticket认证",
+    "source": "open-api-user-ticket-clear.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-ticket-create",
+    "name": "open-api-user-ticket-create.md",
+    "title": "创建指定用户的认证ticket",
+    "source": "open-api-user-ticket-create.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-user-update",
+    "name": "open-api-user-update.md",
+    "title": "更新用户信息",
+    "source": "open-api-user-update.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-workflow-execute",
+    "name": "open-api-workflow-execute.md",
+    "title": "执行工作流",
+    "source": "open-api-workflow-execute.html",
+    "rewritten": false
+  },
+  {
+    "slug": "open-api-workflow-stream-execute",
+    "name": "open-api-workflow-stream-execute.md",
+    "title": "工作流流式执行",
+    "source": "open-api-workflow-stream-execute.html",
+    "rewritten": false
+  },
+  {
+    "slug": "page-develop",
+    "name": "page-develop.md",
+    "title": "应用页面开发",
+    "source": "page-develop.html",
+    "rewritten": false
+  },
+  {
+    "slug": "permission-management",
+    "name": "permission-management.md",
+    "title": "智能体平台 - 权限管理操作手册",
+    "source": "permission-management.html",
+    "rewritten": false
+  },
+  {
+    "slug": "platform-model-config-price-monitor",
+    "name": "platform-model-config-price-monitor.md",
+    "title": "平台系统模型管理",
+    "source": "platform-model-config-price-monitor.html",
+    "rewritten": false
+  },
+  {
+    "slug": "platform-payment-revenue",
+    "name": "platform-payment-revenue.md",
+    "title": "支付与收益实施范围",
+    "source": "platform-payment-revenue.html",
+    "rewritten": true
+  },
+  {
+    "slug": "platform-subscription-monetization",
+    "name": "platform-subscription-monetization.md",
+    "title": "订阅与积分",
+    "source": "platform-subscription-monetization.html",
+    "rewritten": false
+  },
+  {
+    "slug": "plugin",
+    "name": "plugin.md",
+    "title": "智能体平台 · 插件系统介绍",
+    "source": "plugin.html",
+    "rewritten": false
+  },
+  {
+    "slug": "privacy",
+    "name": "privacy.md",
+    "title": "隐私政策编写要求",
+    "source": "privacy.html",
+    "rewritten": true
+  },
+  {
+    "slug": "qa-agent",
+    "name": "qa-agent.md",
+    "title": "问答型智能体编排详解",
+    "source": "qa-agent.html",
+    "rewritten": false
+  },
+  {
+    "slug": "sandbox-management",
+    "name": "sandbox-management.md",
+    "title": "智能体平台 - 沙盒配置操作手册",
+    "source": "sandbox-management.html",
+    "rewritten": false
+  },
+  {
+    "slug": "skill-management",
+    "name": "skill-management.md",
+    "title": "技能管理",
+    "source": "skill-management.html",
+    "rewritten": false
+  },
+  {
+    "slug": "subagents",
+    "name": "subagents.md",
+    "title": "子智能体",
+    "source": "subagents.html",
+    "rewritten": false
+  },
+  {
+    "slug": "system-config",
+    "name": "system-config.md",
+    "title": "系统配置用户操作手册",
+    "source": "system-config.html",
+    "rewritten": false
+  },
+  {
+    "slug": "table",
+    "name": "table.md",
+    "title": "数据表功能介绍",
+    "source": "table.html",
+    "rewritten": false
+  },
+  {
+    "slug": "user-agreement",
+    "name": "user-agreement.md",
+    "title": "用户服务协议编写要求",
+    "source": "user-agreement.html",
+    "rewritten": true
+  },
+  {
+    "slug": "user-manual",
+    "name": "user-manual.md",
+    "title": "平台概览",
+    "source": "user-manual.html",
+    "rewritten": true
+  },
+  {
+    "slug": "workflow",
+    "name": "workflow.md",
+    "title": "工作流",
+    "source": "workflow.html",
+    "rewritten": false
+  },
+  {
+    "slug": "workspace",
+    "name": "workspace.md",
+    "title": "工作空间介绍",
+    "source": "workspace.html",
+    "rewritten": false
+  },
+  {
+    "slug": "xp",
+    "name": "xp.md",
+    "title": "跨平台传递",
+    "source": "xp.html",
+    "rewritten": false
+  },
+  {
+    "slug": "zhiyuan",
+    "name": "zhiyuan.md",
+    "title": "高考填报志愿智能体",
+    "source": "zhiyuan.html",
+    "rewritten": false
+  },
+  {
+    "slug": "常用词解释",
+    "name": "常用词解释.md",
+    "title": "常用词解释",
+    "source": "常用词解释.html",
+    "rewritten": false
+  }
+]

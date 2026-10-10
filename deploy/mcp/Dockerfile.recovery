@@ -1,0 +1,9 @@
+FROM singux/mcp-proxy:0.2.8-local
+USER root
+COPY fixture/package.json fixture/package-lock.json /opt/mcp-fixtures/filesystem/
+RUN npm ci --prefix /opt/mcp-fixtures/filesystem --ignore-scripts --omit=dev \
+    --registry=https://registry.npmmirror.com \
+    && npm cache clean --force \
+    && chmod -R a+rX /opt/mcp-fixtures
+USER 10001:10001
+LABEL org.opencontainers.image.version="0.2.8-20261009-recovery-r1"

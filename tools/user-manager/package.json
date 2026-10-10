@@ -1,0 +1,32 @@
+{
+  "name": "singux-user-manager",
+  "version": "0.1.11",
+  "private": true,
+  "description": "Singu X local user import manager",
+  "author": "Singu X",
+  "license": "UNLICENSED",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "package": "npm run build && electron-packager . SinguX-User-Manager --platform=win32 --arch=x64 --out=release/0.1.11 --overwrite --asar --ignore=^/release --ignore=^/tests --ignore=^/src --ignore=^/artifacts"
+  },
+  "dependencies": {
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "yauzl": "3.2.0"
+  },
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "44.5.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "antd": "5.27.6",
+    "@ant-design/icons": "5.6.1",
+    "typescript": "5.9.3",
+    "@types/react": "18.3.26",
+    "@types/react-dom": "18.3.7",
+    "vite": "6.4.3"
+  }
+}

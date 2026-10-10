@@ -1,0 +1,16 @@
+{
+  "name": "singux-mcp-filesystem-test",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/server-filesystem": "2025.8.21",
+    "@modelcontextprotocol/sdk": "1.17.0",
+    "zod": "3.25.76",
+    "zod-to-json-schema": "3.24.6"
+  },
+  "overrides": {
+    "@modelcontextprotocol/sdk": "1.17.0",
+    "zod": "3.25.76",
+    "zod-to-json-schema": "3.24.6"
+  }
+}

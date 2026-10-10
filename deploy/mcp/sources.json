@@ -1,0 +1,19 @@
+{
+  "mcpProxy": {
+    "repository": "https://github.com/nuwax-ai/mcp-proxy.git",
+    "tag": "v0.2.8",
+    "commit": "4e58cac6b3930e89aef7c0c33ef29841e86b24ac",
+    "archiveSha256": "80fbada7d6fb4a2c7802fc73a0920dab19c3541459b292304c14a32044be0fb5",
+    "localRuntimeBaseImageId": "sha256:064abf81ce1f78b491709145704d1954327c72a21f205aeb9a412dbab40d3ee9"
+  },
+  "rcoder": {
+    "repository": "https://github.com/nuwax-ai/rcoder.git",
+    "commit": "dca2e186f78d37e1d075ecfa7c0d9a16a6d6b94c",
+    "status": "source-inspection-only"
+  },
+  "fileServer": {
+    "repository": "https://github.com/nuwax-ai/nuwax-file-server.git",
+    "commit": "55ac510c916b83f6e50c23e9288983e4f98d67f6",
+    "status": "source-inspection-only"
+  }
+}

@@ -1,0 +1,38 @@
+# Opt-in overlay, Compose 2.24.4+. Does not start or alter existing services by itself.
+services:
+  caddy:
+    image: caddy:2
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL before enabling the gateway}
+      ACME_CA: ${ACME_CA:-https://acme-staging-v02.api.letsencrypt.org/directory}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+  frontend:
+    ports: !override
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
+  backend:
+    environment:
+      SERVER_FORWARD_HEADERS_STRATEGY: framework
+  mysql:
+    ports: !reset []
+  redis:
+    ports: !reset []
+  minio:
+    ports: !reset []
+  milvus:
+    ports: !reset []
+  elasticsearch:
+    ports: !reset []
+volumes:
+  caddy-data:
+  caddy-config:

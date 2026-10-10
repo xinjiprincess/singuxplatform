@@ -1,0 +1,77 @@
+# 依赖
+node_modules
+.pnpm-store
+.npm-cache
+
+# 构建产物
+/dist
+/.umi
+/.umi-production
+/.umi-test
+/src/.umi
+/src/.umi-production
+/src/.umi-test
+/.mfsu
+.swc
+
+# 本地配置
+.env.local
+.env.compose
+.env.compose.*
+*.tar
+*.tar.gz
+*.tar.xz
+*.jar
+/deploy-package
+/training-output
+/.training-build
+/frontend-static-deploy-v1.1.10-fix
+/xagi-frontend-templates-local
+.umirc.local.ts
+/config/config.local.ts
+
+# IDE / 编辑器
+/.idea
+/.vscode
+/.cursor
+/.claude
+/.agent
+/.kilo
+
+# Git / CI
+.git
+.gitignore
+.github
+.husky
+
+# 日志 / 报告
+/reports
+*.log
+
+# 测试 / Mock
+/src/mock
+
+# Docker / K8s / 部署（构建阶段不需要）
+/k8s/config
+!/k8s/default.conf.template
+Dockerfile*
+docker-compose*.yml
+docker-compose*.yaml
+.dockerignore
+devspace.yaml
+devspace_start.sh
+
+# 其他
+/releases
+.DS_Store
+.temp
+*.md
+CHANGELOG.md
+CONTRIBUTING.md
+IMAGE_ASSETS.md
+LICENSE
+Makefile
+
+# 微信公众/小程序域名校验文件
+public/MP_verify_*.txt
+public/Nd28jPGzj4.txt

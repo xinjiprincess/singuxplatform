@@ -1,0 +1,5 @@
+**
+!dist/
+!dist/**
+!k8s/
+!k8s/default.conf.template

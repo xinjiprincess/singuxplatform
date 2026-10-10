@@ -1,0 +1,10 @@
+const fs = require('fs');
+const path = require('path');
+const MarkdownIt = require('markdown-it');
+const root = path.resolve(__dirname, '..');
+const target = path.join(root, 'tmp/pdfs');
+fs.mkdirSync(target, { recursive: true });
+const md = new MarkdownIt({ html: false, linkify: false }).enable('table');
+const tokens = md.parse(fs.readFileSync(path.join(root, 'docs/user-manual.md'), 'utf8'), {});
+fs.writeFileSync(path.join(target, 'manual-tokens.json'), JSON.stringify(tokens));
+console.log(tokens.length + ' Markdown tokens');

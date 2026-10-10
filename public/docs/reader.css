@@ -1,0 +1,37 @@
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+.public-app.docs-mode { background: #fff; }
+.docs-mode .public-nav { height: 56px; padding: 0 24px; }
+.docs-toolbar { padding: 12px 24px; gap: 12px; position: sticky; top: 0; z-index: 5; }
+.docs-layout { max-width: 1600px; grid-template-columns: 240px minmax(0, 1fr) 180px; gap: 20px; padding: 0 24px; }
+.docs-main { padding: 28px 36px 40px; }
+.doc-body { font-size: 16px; line-height: 1.9; color: #303846; }
+.doc-body pre { font-size: 13px; line-height: 1.7; }
+.doc-title h1 { font-size: 28px; letter-spacing: 0; }
+.docs-search input { font-size: 14px; }
+.docs-sidebar { padding-top: 20px; top: 64px; max-height: calc(100vh - 64px); }
+.docs-search { position: sticky; top: 0; z-index: 2; }
+.reader-embedded .docs-sidebar { top: 64px; }
+.doc-nav-group > a { font-size: 14px; }
+.doc-body table, .doc-body blockquote { font-size: 14px; }
+.doc-body h2, .doc-body h3, .doc-body h4 { scroll-margin-top: 85px; }
+.reader-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.reader-actions button { width: 36px; height: 36px; border: 1px solid #d8dfe6; border-radius: 4px; background: #fff; color: #35415f; cursor: pointer; font-size: 18px; }
+.reader-actions button:hover { background: #f0f4f8; }
+.reader-actions button:focus-visible { outline: 2px solid #345fca; outline-offset: 2px; }
+.reader-embedded .public-nav { display: none; }
+.reader-embedded .docs-layout { max-width: none; }
+@media (max-width: 1450px) {
+  .docs-layout { grid-template-columns: 225px minmax(0, 1fr); gap: 16px; }
+  .doc-on-page { display: none; }
+}
+@media (max-width: 800px) {
+  .docs-layout { display: block; padding: 0; }
+  .docs-toolbar { padding: 10px 16px; flex-wrap: wrap; }
+  .docs-main { padding: 24px 20px; }
+  .docs-sidebar { padding: 0; }
+  .doc-title h1 { font-size: 24px; }
+  .doc-body { font-size: 15px; }
+  .doc-body pre { overflow: auto; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

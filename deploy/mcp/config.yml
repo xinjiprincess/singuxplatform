@@ -1,0 +1,9 @@
+server:
+  port: 8080
+log:
+  level: warn
+  path: /app/logs
+  retain_days: 3
+mirror:
+  npm_registry: https://registry.npmmirror.com
+  pypi_index_url: https://mirrors.aliyun.com/pypi/simple
