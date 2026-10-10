@@ -41,7 +41,7 @@ if (action === 'prepare') {
     manifest.files++; manifest.bytes += bytes.length;
     let content;
     try {
-      content = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+      content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
       if (bytes.includes(0)) content = null;
     } catch { content = null; }
     if (content !== null) {

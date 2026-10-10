@@ -1,4 +1,4 @@
-param([ValidateSet('processes','startup','services')][string]$Mode)
+﻿param([ValidateSet('processes','startup','services')][string]$Mode)
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 if ($Mode -eq 'processes') {

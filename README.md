@@ -1,4 +1,18 @@
-# Nuwax
+# singuxplatform
+
+Singu X platform frontend, local management clients, deployment tooling and documentation, based on Nuwax.
+
+- Frontend: `src/`, `config/`, `public/`.
+- Local clients: `tools/user-manager/`, `tools/local-manager/`.
+- Docker and recovery tooling: `deploy/`, `docker-compose.yml`.
+- Project notes and release history: `docs/`, `VERSION_CHANGES.md`.
+- Backend sources are maintained separately and are not included in this repository.
+
+This repository imports a current source snapshot through the GitHub connector. Original development history remains in the local repository. Credentials, private rosters, backups, container images and local environment files are excluded. PDF manuals are excluded pending regeneration from sanitized documentation; the web documentation is included.
+
+Publishing this repository does not deploy production services. See `deploy/README.md` before deploying. Existing upstream licensing and attribution remain applicable.
+
+## Nuwax Upstream Reference
 
 Nuwax AI - Easily build and deploy your private Agentic AI solutions.
 
